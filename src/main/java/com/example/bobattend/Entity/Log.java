@@ -10,12 +10,20 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name="Log")
+@Table(name="log")
 public class Log {
     @Id
+    @Column(name="index")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     int index;
-    String mac_addr;
+    @Column(name="is_processed")
+    boolean is_processed;
+    @Column(name="node_id")
+    int node_id;
+    @Column(name="device_id")
     int device_id;
+    @Column(name="RSSI")
     int RSSI;
+    @Column(name="time")
     LocalDateTime time;
 }

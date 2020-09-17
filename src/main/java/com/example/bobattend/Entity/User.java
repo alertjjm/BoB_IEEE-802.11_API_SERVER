@@ -2,19 +2,34 @@ package com.example.bobattend.Entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name="Personal_Info")
+@Table(name="personal")
 public class User {
-    int num;
     @Id
-    String personal_id;
+    @Column(name="personal_id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    int personal_id;
+    @Column(name="name")
     String name;
+    @Column(name="id")
+    String id;
+    @Column(name="password")
+    String password;
+    public User(int personal_id, String name, String id, String password){
+        setPersonal_id(personal_id);
+        setName(name);
+        setId(id);
+        setPassword(password);
+    }
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="personal_id")
+    private List<Device> deviceList = new ArrayList<>();
 }
