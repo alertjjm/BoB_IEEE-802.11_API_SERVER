@@ -16,11 +16,11 @@ public class Attendance {
     @GeneratedValue(strategy=GenerationType.IDENTITY) //id null로
     int index;
     @Column(name="personal_id")
-    int personal_id;
+    int personalid;
     @Column(name="room_id")
-    int room_id;
+    int roomid;
     @Column(name="enter_time")
-    LocalDateTime enter_time;
+    LocalDateTime entertime;
     @Column(name="exit_time")
-    LocalDateTime exit_time;
+    LocalDateTime exittime;
 }
