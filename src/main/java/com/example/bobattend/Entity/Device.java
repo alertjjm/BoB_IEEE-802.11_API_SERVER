@@ -1,5 +1,6 @@
 package com.example.bobattend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;

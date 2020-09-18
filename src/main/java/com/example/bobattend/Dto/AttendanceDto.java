@@ -1,7 +1,10 @@
 package com.example.bobattend.Dto;
 
 import com.example.bobattend.Entity.Attendance;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jdk.jfr.DataAmount;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +16,5 @@ import java.util.List;
 @Setter
 public class AttendanceDto {
     int count;
-    List<Attendance> data;
+    List<AttendanceInterface> data;
 }
