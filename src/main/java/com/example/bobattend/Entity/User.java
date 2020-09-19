@@ -24,8 +24,8 @@ public class User {
     String id;
     @Column(name="password")
     String password;
-    public User(int personal_id, String name, String id, String password){
-        setPersonal_id(personal_id);
+    @Builder
+    public User(String name, String id, String password){
         setName(name);
         setId(id);
         setPassword(password);
