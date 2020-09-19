@@ -33,7 +33,7 @@ public class BasicController {
 
 
     /***************모든 personal 정보 출력*********************/
-    @GetMapping(value="/all", produces = "applicationi/json")
+    @GetMapping(value="/all", produces = "application/json")
     public String showall(){
         List<User> userList;
         userList=userrepo.findAll();
@@ -43,7 +43,7 @@ public class BasicController {
         return i;
     }
     /***************id를 통해 personal 정보 출력*********************/
-    @GetMapping(value = "/{id}",produces = "applicationi/json")
+    @GetMapping(value = "/{id}",produces = "application/json")
     public String showbyuserid(@PathVariable("id") String id){
         User user=userrepo.findById(id);
         Gson gson=new Gson();
@@ -51,7 +51,7 @@ public class BasicController {
         return i;
     }
     /***************id와 날짜를 통해 attendance 정보 출력*********************/
-    @GetMapping(value = "/{id}/{time}",produces = "applicationi/json")
+    @GetMapping(value = "/{id}/{time}",produces = "application/json")
     public String showattendancebyid(Model model, @PathVariable("id") String id, @PathVariable("time") String time) throws ParseException {
         int year=Integer.parseInt(time.substring(0,4));
         int month=Integer.parseInt(time.substring(4,6));
@@ -60,7 +60,7 @@ public class BasicController {
         LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
         User temp=userrepo.findById(id);
         List<AttendanceInterface> datalist=new ArrayList<>();
-        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetween(temp.getPersonal_id(),startdate,enddate);
+        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonal_id(),startdate,enddate);
         for(Attendance a:attendanceList){
             LocalDateTime temptime=a.getEntertime();
             int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();

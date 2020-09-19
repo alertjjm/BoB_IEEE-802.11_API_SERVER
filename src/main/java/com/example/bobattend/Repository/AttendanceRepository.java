@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface AttendanceRepository extends CrudRepository<Attendance,Integer> {
-    List<Attendance> findAllByPersonalidAndExittimeBetween(int id, LocalDateTime start, LocalDateTime end);
+    List<Attendance> findAllByPersonalidAndExittimeBetweenOrderByEntertime(int id, LocalDateTime start, LocalDateTime end);
 }
