@@ -6,7 +6,10 @@ import com.example.bobattend.Repository.DeviceRepository;
 import com.example.bobattend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.security.MessageDigest;
 
 @Controller
@@ -38,5 +41,16 @@ public class AddController {
         deviceDto.setDevice_index(len+1);
         deviceRepository.save(deviceDto.toEntity());
         return "redirect:/api/"+deviceDto.getId();
+    }
+    @GetMapping(value="/")
+    public String mainpage()  {
+        return "index.html";
+    }
+    @GetMapping(value="/search")
+    public String search(@RequestParam(value = "id") String id,@RequestParam(value = "time") String time)  {
+        if(time.trim().equals("")==true)
+            return "redirect:/api/"+id;
+        else
+            return "redirect:/api/"+id+"/"+ time;
     }
 }
