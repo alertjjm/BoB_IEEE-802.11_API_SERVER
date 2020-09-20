@@ -4,6 +4,7 @@ import com.example.bobattend.Dto.UserDto;
 import com.example.bobattend.Entity.User;
 import com.example.bobattend.Repository.DeviceRepository;
 import com.example.bobattend.Repository.UserRepository;
+import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class AddController {
         md.update(msg.getBytes());
         StringBuilder builder = new StringBuilder();
         for (byte b: md.digest()) {
-            builder.append(String.format("%02x  ", b));
+            builder.append(String.format("%02x", b));
         }
         return builder.toString();
     }

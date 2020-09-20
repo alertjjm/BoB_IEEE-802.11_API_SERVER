@@ -61,17 +61,22 @@ public class BasicController {
         User temp=userrepo.findById(id);
         List<AttendanceInterface> datalist=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonal_id(),startdate,enddate);
-        for(Attendance a:attendanceList){
-            LocalDateTime temptime=a.getEntertime();
-            int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
-            temptime=a.getExittime();
-            int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
-            AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
-            datalist.add(tempinterface);
+        if(attendanceList.size()>0){
+            for(Attendance a:attendanceList){
+                LocalDateTime temptime=a.getEntertime();
+                int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                temptime=a.getExittime();
+                int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
+                datalist.add(tempinterface);
+            }
+            AttendanceDto jsonResult=new AttendanceDto(attendanceList.size(),datalist);
+            Gson gson=new Gson();
+            String i=gson.toJson(jsonResult);
+            return i;
         }
-        AttendanceDto jsonResult=new AttendanceDto(attendanceList.size(),datalist);
-        Gson gson=new Gson();
-        String i=gson.toJson(jsonResult);
-        return i;
+        else{
+            return "Not Found";
+        }
     }
 }
