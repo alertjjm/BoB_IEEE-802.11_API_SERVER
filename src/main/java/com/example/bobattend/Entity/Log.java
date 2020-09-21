@@ -2,7 +2,6 @@ package com.example.bobattend.Entity;
 
 import lombok.*;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 @Entity
