@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '14'
+sourceCompatibility = '8'
 
 configurations {
     compileOnly {
@@ -38,6 +38,11 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     //testImplementation 'org.springframework.security:spring-security-test'
+}
+bootJar{
+    archiveBaseName='-'
+    archiveFileName='attendance.jar'
+    archiveVersion="0.0.0"
 }
 
 test {
