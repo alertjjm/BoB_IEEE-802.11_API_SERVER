@@ -41,7 +41,7 @@ dependencies {
 }
 bootJar{
     archiveBaseName='-'
-    archiveFileName='attendance.jar'
+    archiveFileName='attend.jar'
     archiveVersion="0.0.0"
 }
 
