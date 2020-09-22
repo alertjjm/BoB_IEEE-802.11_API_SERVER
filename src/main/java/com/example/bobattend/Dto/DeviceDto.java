@@ -12,6 +12,6 @@ public class DeviceDto {
     String id;
     String mac;
     public Device toEntity(){
-        return Device.builder().personal_id(personal_id).device_index(device_index).mac_addr(mac).build();
+        return Device.builder().personal_id(personal_id).device_index(device_index).macaddr(mac).build();
     }
 }

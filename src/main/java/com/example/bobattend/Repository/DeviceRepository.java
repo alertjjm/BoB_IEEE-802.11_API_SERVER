@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DeviceRepository extends CrudRepository<Device,Integer> {
+    Device findDeviceByMacaddr(String mac);
 }

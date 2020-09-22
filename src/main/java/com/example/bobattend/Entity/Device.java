@@ -1,10 +1,8 @@
 package com.example.bobattend.Entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.print.DocFlavor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -20,13 +18,13 @@ public class Device {
     @Column(name="personal_id")
     int personal_id;
     @Column(name="mac_addr")
-    String mac_addr;
+    String macaddr;
     @Column(name="device_index")
     int device_index;
     @Builder
-    public Device(int personal_id, String mac_addr, int device_index){
+    public Device(int personal_id, String macaddr, int device_index){
         setPersonal_id(personal_id);
-        setMac_addr(mac_addr);
+        setMacaddr(macaddr);
         setDevice_index(device_index);
     }
 }
