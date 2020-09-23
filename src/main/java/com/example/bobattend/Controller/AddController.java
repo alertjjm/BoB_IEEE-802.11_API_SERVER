@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.MessageDigest;
-import java.sql.PseudoColumnUsage;
 
 @Controller
 public class AddController {
@@ -33,7 +32,7 @@ public class AddController {
     }
     @PostMapping(value="/user/signup")
     public String signup(UserDto userDto, Model model) throws Exception {
-        System.out.println(userDto.getId());
+        System.out.println(userDto.getName());
         User temp=userRepository.findById(userDto.getId());
         if(temp!=null||userDto.getId().trim()==""||userDto.getPassword()==""||userDto.getName().trim()==""){
             return "redirect:/error";
