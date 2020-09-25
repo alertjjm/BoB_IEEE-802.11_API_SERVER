@@ -10,11 +10,13 @@ import com.example.bobattend.Repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,6 +48,11 @@ public class BasicController {
     @GetMapping(value = "/{id}",produces = "application/json")
     public String showbyuserid(@PathVariable("id") String id){
         User user=userrepo.findById(id);
+        if(user==null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
         Gson gson=new Gson();
         String i=gson.toJson(user);
         return i;
@@ -76,7 +83,9 @@ public class BasicController {
             return i;
         }
         else{
-            return "Not Found";
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
         }
     }
 }
