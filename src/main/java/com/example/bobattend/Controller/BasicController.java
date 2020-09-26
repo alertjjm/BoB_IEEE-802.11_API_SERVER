@@ -2,6 +2,7 @@ package com.example.bobattend.Controller;
 
 import com.example.bobattend.Dto.AttendanceDto;
 import com.example.bobattend.Dto.AttendanceInterface;
+import com.example.bobattend.Dto.DateAttendanceDto;
 import com.example.bobattend.Dto.UserListDto;
 import com.example.bobattend.Entity.Attendance;
 import com.example.bobattend.Entity.User;
@@ -87,5 +88,45 @@ public class BasicController {
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
+    }
+    /***************모든 date 정보 출력*********************/
+    @GetMapping(value="/date/{date}", produces = "application/json")
+    public String dateshow(@PathVariable("date") String date){
+        if(date.length()!=8){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "date format error"
+            );
+        }
+        int year=Integer.parseInt(date.substring(0,4));
+        int month=Integer.parseInt(date.substring(4,6));
+        int day=Integer.parseInt(date.substring(6,8));
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
+        List<Attendance> attendanceList=attendrepo.findAllByExittimeBetween(startdate,enddate);
+        if(attendanceList.size()==0){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "date no result"
+            );
+        }
+        List<User> userList;
+        userList=userrepo.findAll();
+        List<DateAttendanceDto> returnlist=new ArrayList<>();
+        for(User t:userList){
+            DateAttendanceDto temp=new DateAttendanceDto();
+            temp.setName(t.getName());
+            temp.setStatus(Boolean.FALSE);
+            temp.setId(t.getId());
+            temp.setRoomdid(0);
+            returnlist.add(temp);
+            for(Attendance a: attendanceList){
+                if(t.getPersonal_id()==a.getPersonalid()){
+                    temp.setStatus(Boolean.TRUE);
+                    temp.setRoomdid(a.getRoomid());
+                }
+            }
+        }
+        Gson gson=new Gson();
+        String i=gson.toJson(returnlist);
+        return i;
     }
 }
