@@ -57,11 +57,11 @@ public class BasicController {
         return i;
     }
     /***************id와 날짜를 통해 attendance 정보 출력*********************/
-    @GetMapping(value = "/{id}/{time}",produces = "application/json")
-    public String showattendancebyid(Model model, @PathVariable("id") String id, @PathVariable("time") String time) throws ParseException {
-        int year=Integer.parseInt(time.substring(0,4));
-        int month=Integer.parseInt(time.substring(4,6));
-        int day=Integer.parseInt(time.substring(6,8));
+    @GetMapping(value = "/{id}/{date}",produces = "application/json")
+    public String showattendancebyid(Model model, @PathVariable("id") String id, @PathVariable("date") String date) throws ParseException {
+        int year=Integer.parseInt(date.substring(0,4));
+        int month=Integer.parseInt(date.substring(4,6));
+        int day=Integer.parseInt(date.substring(6,8));
         LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
         LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
         User temp=userrepo.findById(id);
@@ -133,5 +133,45 @@ public class BasicController {
         Gson gson=new Gson();
         String i=gson.toJson(returnlist);
         return i;
+    }
+    /***************모든 time 정보 출력*********************/
+    @GetMapping(value="/timelist", produces = "application/json")
+    public String timeshow(@RequestParam(value = "time",required = false) String time,@RequestParam(value = "date",required = false) String date){
+        int parsedtime;
+        LocalDateTime enddate=LocalDateTime.now();
+        LocalDateTime startdate=enddate.minusMinutes(15);
+        if(time!=null){
+            parsedtime=Integer.parseInt(time);
+            int hour=parsedtime/3600;
+            parsedtime%=3600;
+            int minute=parsedtime/60;
+            int second=parsedtime%60;
+            int year=Integer.parseInt(date.substring(0,4));
+            int month=Integer.parseInt(date.substring(4,6));
+            int day=Integer.parseInt(date.substring(6,8));
+            enddate=LocalDateTime.of(year, month, day, hour,minute,second);
+            startdate=enddate.minusMinutes(15);
+        }
+        List<AttendanceInterface> datalist=new ArrayList<>();
+        List<Attendance> attendanceList=attendrepo.findAllByEntertimeBetweenOrderByEntertime(startdate,enddate);
+        if(attendanceList.size()>0){
+            for(Attendance a:attendanceList){
+                LocalDateTime temptime=a.getEntertime();
+                int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                temptime=a.getExittime();
+                int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
+                datalist.add(tempinterface);
+            }
+            AttendanceDto jsonResult=new AttendanceDto(attendanceList.size(),datalist);
+            Gson gson=new Gson();
+            String i=gson.toJson(jsonResult);
+            return i;
+        }
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
     }
 }

@@ -1,20 +1,28 @@
 package com.example.bobattend.Controller;
+import com.example.bobattend.Dto.AttendanceDto;
+import com.example.bobattend.Dto.AttendanceInterface;
 import com.example.bobattend.Dto.DeviceDto;
 import com.example.bobattend.Dto.UserDto;
+import com.example.bobattend.Entity.Attendance;
 import com.example.bobattend.Entity.Device;
 import com.example.bobattend.Entity.User;
+import com.example.bobattend.Repository.AttendanceRepository;
 import com.example.bobattend.Repository.DeviceRepository;
 import com.example.bobattend.Repository.UserRepository;
+import com.google.gson.Gson;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.MessageDigest;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @Controller
 public class AddController {
@@ -22,6 +30,8 @@ public class AddController {
     UserRepository userRepository;
     @Autowired
     DeviceRepository deviceRepository;
+    @Autowired
+    AttendanceRepository attendrepo;
     public static String sha256(String msg) throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(msg.getBytes());
