@@ -160,11 +160,14 @@ public class BasicController {
             int month=Integer.parseInt(date.substring(4,6));
             int day=Integer.parseInt(date.substring(6,8));
             enddate=LocalDateTime.of(year, month, day, hour,minute,second);
-            startdate=enddate.minusMinutes(15);
+            startdate=enddate.minusMinutes(60);
+            System.out.println(startdate);
+            System.out.println(enddate);
         }
         List<AttendanceInterface> datalist=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByEntertimeBetweenOrderByEntertime(startdate,enddate);
         if(attendanceList.size()>0){
+            System.out.println(attendanceList.size());
             for(Attendance a:attendanceList){
                 LocalDateTime temptime=a.getEntertime();
                 int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
