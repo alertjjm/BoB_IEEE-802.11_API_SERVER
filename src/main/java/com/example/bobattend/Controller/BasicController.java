@@ -111,6 +111,8 @@ public class BasicController {
                 temp.setStatus(Boolean.FALSE);
                 temp.setId(t.getId());
                 temp.setRoomdid(0);
+                temp.setEntertime(0);
+                temp.setExittime(0);
                 returnlist.add(temp);
             }
         }
@@ -121,11 +123,19 @@ public class BasicController {
                 temp.setStatus(Boolean.FALSE);
                 temp.setId(t.getId());
                 temp.setRoomdid(0);
+                temp.setEntertime(86400);
+                temp.setExittime(0);
                 returnlist.add(temp);
                 for(Attendance a: attendanceList){
+                    int tempentertime=a.getEntertime().getHour()*3600+a.getEntertime().getMinute()*60+a.getEntertime().getSecond();
+                    int tempexittime=a.getExittime().getHour()*3600+a.getExittime().getMinute()*60+a.getExittime().getSecond();
                     if(t.getPersonal_id()==a.getPersonalid()){
                         temp.setStatus(Boolean.TRUE);
                         temp.setRoomdid(a.getRoomid());
+                        if(temp.getEntertime()>tempentertime)
+                            temp.setEntertime(tempentertime);
+                        if(temp.getExittime()<tempexittime)
+                            temp.setExittime(tempexittime);
                     }
                 }
             }

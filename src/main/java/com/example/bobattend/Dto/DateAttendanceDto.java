@@ -14,4 +14,6 @@ public class DateAttendanceDto {
     String id;
     Boolean status;
     int roomdid;
+    int entertime;
+    int exittime;
 }
