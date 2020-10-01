@@ -166,8 +166,8 @@ public class BasicController {
         }
         List<AttendanceInterface> datalist=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByEntertimeBetweenOrderByEntertime(startdate,enddate);
+        System.out.println(attendanceList.size());
         if(attendanceList.size()>0){
-            System.out.println(attendanceList.size());
             for(Attendance a:attendanceList){
                 LocalDateTime temptime=a.getEntertime();
                 int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
