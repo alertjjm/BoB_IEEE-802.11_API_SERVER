@@ -149,7 +149,7 @@ public class BasicController {
     public String timeshow(@RequestParam(value = "time",required = false) String time,@RequestParam(value = "date",required = false) String date){
         int parsedtime;
         LocalDateTime enddate=LocalDateTime.now();
-        LocalDateTime startdate=enddate.minusMinutes(15);
+        LocalDateTime startdate=enddate.minusMinutes(60);
         if(time!=null){
             parsedtime=Integer.parseInt(time);
             int hour=parsedtime/3600;
