@@ -78,6 +78,19 @@ public class BasicController {
         String i=gson.toJson(alist);
         return i;
     }
+    /***************id를 통해 personal 정보 출력*********************/
+    @GetMapping(value = "/{id}",produces = "application/json")
+    public String showbyuserid(@PathVariable("id") String id){
+        User user=userrepo.findById(id);
+        if(user==null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+        Gson gson=new Gson();
+        String i=gson.toJson(user);
+        return i;
+    }
     /***************id와 날짜를 통해 attendance 정보 출력*********************/
     @GetMapping(value = "/{id}/{date}",produces = "application/json")
     public String showattendancebyid(Model model, @PathVariable("id") String id, @PathVariable("date") String date) throws ParseException {
