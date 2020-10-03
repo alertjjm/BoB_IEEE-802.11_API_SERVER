@@ -16,8 +16,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -60,13 +62,17 @@ public class BasicController {
             alist.add(atemp);
         }
         for(AttendancebynameDto u: alist){
+            HashSet<String> dateset=new HashSet<>();
             for(Attendance a: attendanceList){
                 if(a.getPersonalid()==u.getPersonalid()){
-                    String date=Integer.toString(a.getEntertime().getYear())+Integer.toString(a.getEntertime().getMonthValue())+Integer.toString(a.getEntertime().getDayOfMonth());
+                    String date= a.getEntertime().format(DateTimeFormatter.BASIC_ISO_DATE);
                     u.setRoomid(a.getRoomid());
-                    u.adddatelist(date);
+                    dateset.add(date);
                 }
             }
+            ArrayList<String> datelist=new ArrayList<>(dateset);
+            datelist.sort(null);
+            u.setDatelist(datelist);
         }
         Gson gson=new Gson();
         String i=gson.toJson(alist);

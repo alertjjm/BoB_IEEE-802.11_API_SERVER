@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -15,7 +17,7 @@ public class AttendancebynameDto {
     String name;
     String id;
     int personalid;
-    HashSet<String> datelist = new HashSet<>();
+    List<String> datelist = new ArrayList<>();
     int roomid;
     public void adddatelist(String date){
         this.datelist.add(date);
