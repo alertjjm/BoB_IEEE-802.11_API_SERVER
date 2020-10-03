@@ -2,10 +2,9 @@ package com.example.bobattend.Controller;
 
 import com.example.bobattend.Dto.*;
 import com.example.bobattend.Entity.Attendance;
-import com.example.bobattend.Entity.User;
+import com.example.bobattend.Entity.Member;
 import com.example.bobattend.Repository.AttendanceRepository;
 import com.example.bobattend.Repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -35,9 +32,9 @@ public class BasicController {
     /***************모든 personal 정보 출력*********************/
     @GetMapping(value="/all", produces = "application/json")
     public String showall(){
-        List<User> userList;
-        userList=userrepo.findAll();
-        UserListDto jsonResult=new UserListDto(userList.size(),userList);
+        List<Member> memberList;
+        memberList =userrepo.findAll();
+        UserListDto jsonResult=new UserListDto(memberList.size(), memberList);
         Gson gson=new Gson();
         String i=gson.toJson(jsonResult);
         return i;
@@ -45,16 +42,16 @@ public class BasicController {
     /***************이름를 통해 personal 정보 출력*********************/
     @GetMapping(value = "/name/{name}",produces = "application/json")
     public String showbyusername(@PathVariable("name") String name){
-        List<User> userList=userrepo.findAllByName(name);
+        List<Member> memberList =userrepo.findAllByName(name);
         List<Attendance> attendanceList=attendrepo.findAll();
 
-        if(userList.size()==0){
+        if(memberList.size()==0){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
         List<AttendancebynameDto> alist=new ArrayList<>();
-        for(User u: userList){
+        for(Member u: memberList){
             AttendancebynameDto atemp=new AttendancebynameDto();
             atemp.setId(u.getId());
             atemp.setName(u.getName());
@@ -81,14 +78,14 @@ public class BasicController {
     /***************id를 통해 personal 정보 출력*********************/
     @GetMapping(value = "/{id}",produces = "application/json")
     public String showbyuserid(@PathVariable("id") String id){
-        User user=userrepo.findById(id);
-        if(user==null){
+        Member member =userrepo.findById(id);
+        if(member ==null){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
         Gson gson=new Gson();
-        String i=gson.toJson(user);
+        String i=gson.toJson(member);
         return i;
     }
     /***************id와 날짜를 통해 attendance 정보 출력*********************/
@@ -99,7 +96,7 @@ public class BasicController {
         int day=Integer.parseInt(date.substring(6,8));
         LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
         LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
-        User temp=userrepo.findById(id);
+        Member temp=userrepo.findById(id);
         List<AttendanceInterface> datalist=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonal_id(),startdate,enddate);
         if(attendanceList.size()>0){
@@ -136,11 +133,11 @@ public class BasicController {
         LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
         LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
         List<Attendance> attendanceList=attendrepo.findAllByExittimeBetween(startdate,enddate);
-        List<User> userList;
-        userList=userrepo.findAll();
+        List<Member> memberList;
+        memberList =userrepo.findAll();
         List<DateAttendanceDto> returnlist=new ArrayList<>();
         if(attendanceList.size()==0){
-            for(User t:userList){
+            for(Member t: memberList){
                 DateAttendanceDto temp=new DateAttendanceDto();
                 temp.setName(t.getName());
                 temp.setStatus(Boolean.FALSE);
@@ -152,7 +149,7 @@ public class BasicController {
             }
         }
         else{
-            for(User t:userList){
+            for(Member t: memberList){
                 DateAttendanceDto temp=new DateAttendanceDto();
                 temp.setName(t.getName());
                 temp.setStatus(Boolean.FALSE);

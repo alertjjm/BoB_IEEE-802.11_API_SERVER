@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="personal")
-public class User {
+public class Member {
     @Id
     @Column(name="personal_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class User {
     @Column(name="password")
     String password;
     @Builder
-    public User(String name, String id, String password){
+    public Member(String name, String id, String password){
         setName(name);
         setId(id);
         setPassword(password);
