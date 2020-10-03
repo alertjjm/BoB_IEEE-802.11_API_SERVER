@@ -65,13 +65,9 @@ public class BasicController {
             HashSet<String> dateset=new HashSet<>();
             for(Attendance a: attendanceList){
                 if(a.getPersonalid()==u.getPersonalid()){
-                    System.out.println(a.toString());
                     String date= a.getEntertime().format(DateTimeFormatter.BASIC_ISO_DATE);
                     u.setRoomid(a.getRoomid());
                     dateset.add(date);
-                }
-                else{
-                    System.out.println("Not matched "+a.toString());
                 }
             }
             ArrayList<String> datelist=new ArrayList<>(dateset);
