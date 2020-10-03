@@ -12,10 +12,12 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 
 @SpringBootApplication
 public class BobattendApplication {
     public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
         SpringApplication.run(BobattendApplication.class, args);
     }
     @Bean
