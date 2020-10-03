@@ -40,7 +40,6 @@ public class BobattendApplication {
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
     }
-    /*
     @Bean
     public ServletWebServerFactory serveltContainer(){
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
@@ -49,9 +48,8 @@ public class BobattendApplication {
     }
     private Connector createStandardConnector(){
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        connector.setPort(8070);
+        connector.setPort(80);
         return connector;
     }
-*/
 
 }
