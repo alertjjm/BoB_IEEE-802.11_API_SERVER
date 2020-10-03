@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 인증을 무시하기 위한 설정
         web.ignoring().antMatchers("/css/**","/js/**","/img/**","/lib/**");
     }
-
+    /*
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -48,7 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling();
     }
-
+*/
+    @Override
+    protected void configure(HttpSecurity security) throws Exception
+    {
+        security.httpBasic().disable();
+    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 로그인 처리를 하기 위한 AuthenticationManagerBuilder를 설정
