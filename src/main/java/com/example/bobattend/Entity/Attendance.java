@@ -23,4 +23,15 @@ public class Attendance {
     LocalDateTime entertime;
     @Column(name="exit_time")
     LocalDateTime exittime;
+
+    @Override
+    public String toString() {
+        return "Attendance{" +
+                "index=" + index +
+                ", personalid=" + personalid +
+                ", roomid=" + roomid +
+                ", entertime=" + entertime +
+                ", exittime=" + exittime +
+                '}';
+    }
 }
