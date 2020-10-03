@@ -1,9 +1,6 @@
 package com.example.bobattend.Controller;
 
-import com.example.bobattend.Dto.AttendanceDto;
-import com.example.bobattend.Dto.AttendanceInterface;
-import com.example.bobattend.Dto.DateAttendanceDto;
-import com.example.bobattend.Dto.UserListDto;
+import com.example.bobattend.Dto.*;
 import com.example.bobattend.Entity.Attendance;
 import com.example.bobattend.Entity.User;
 import com.example.bobattend.Repository.AttendanceRepository;
@@ -43,17 +40,36 @@ public class BasicController {
         String i=gson.toJson(jsonResult);
         return i;
     }
-    /***************id를 통해 personal 정보 출력*********************/
-    @GetMapping(value = "/{id}",produces = "application/json")
-    public String showbyuserid(@PathVariable("id") String id){
-        User user=userrepo.findById(id);
-        if(user==null){
+    /***************이름를 통해 personal 정보 출력*********************/
+    @GetMapping(value = "/name/{name}",produces = "application/json")
+    public String showbyusername(@PathVariable("name") String name){
+        List<User> userList=userrepo.findAllByName(name);
+        List<Attendance> attendanceList=attendrepo.findAll();
+
+        if(userList.size()==0){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
+        List<AttendancebynameDto> alist=new ArrayList<>();
+        for(User u: userList){
+            AttendancebynameDto atemp=new AttendancebynameDto();
+            atemp.setId(u.getId());
+            atemp.setName(u.getName());
+            atemp.setPersonalid(u.getPersonal_id());
+            alist.add(atemp);
+        }
+        for(AttendancebynameDto u: alist){
+            for(Attendance a: attendanceList){
+                if(a.getPersonalid()==u.getPersonalid()){
+                    String date=Integer.toString(a.getEntertime().getYear())+Integer.toString(a.getEntertime().getMonthValue())+Integer.toString(a.getEntertime().getDayOfMonth());
+                    u.setRoomid(a.getRoomid());
+                    u.adddatelist(date);
+                }
+            }
+        }
         Gson gson=new Gson();
-        String i=gson.toJson(user);
+        String i=gson.toJson(alist);
         return i;
     }
     /***************id와 날짜를 통해 attendance 정보 출력*********************/
