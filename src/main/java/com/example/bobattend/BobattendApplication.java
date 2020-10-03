@@ -40,6 +40,7 @@ public class BobattendApplication {
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
     }
+    /*
     @Bean
     public ServletWebServerFactory serveltContainer(){
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
@@ -51,6 +52,6 @@ public class BobattendApplication {
         connector.setPort(8070);
         return connector;
     }
-
+*/
 
 }
