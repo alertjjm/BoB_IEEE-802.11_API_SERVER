@@ -30,6 +30,7 @@ public class BasicController {
 
 
     /***************모든 personal 정보 출력*********************/
+    @CrossOrigin(origins="*")
     @GetMapping(value="/all", produces = "application/json")
     public String showall(){
         List<Member> memberList;
@@ -40,6 +41,7 @@ public class BasicController {
         return i;
     }
     /***************이름를 통해 personal 정보 출력*********************/
+    @CrossOrigin(origins="*")
     @GetMapping(value = "/name/{name}",produces = "application/json")
     public String showbyusername(@PathVariable("name") String name){
         List<Member> memberList =userrepo.findAllByName(name);
