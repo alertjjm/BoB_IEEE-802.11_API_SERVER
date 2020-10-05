@@ -27,12 +27,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+/*
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 인증을 무시하기 위한 설정
         web.ignoring().antMatchers("/css/**","/js/**","/img/**","/lib/**");
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -66,13 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-/*
+  */
     @Override
     protected void configure(HttpSecurity security) throws Exception
     {
         security.httpBasic().disable();
     }
-    */
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
