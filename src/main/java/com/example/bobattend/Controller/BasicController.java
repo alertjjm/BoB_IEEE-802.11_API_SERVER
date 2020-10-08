@@ -2,8 +2,12 @@ package com.example.bobattend.Controller;
 
 import com.example.bobattend.Dto.*;
 import com.example.bobattend.Entity.Attendance;
+import com.example.bobattend.Entity.Device;
+import com.example.bobattend.Entity.Log;
 import com.example.bobattend.Entity.Member;
 import com.example.bobattend.Repository.AttendanceRepository;
+import com.example.bobattend.Repository.DeviceRepository;
+import com.example.bobattend.Repository.LogRepository;
 import com.example.bobattend.Repository.UserRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,10 @@ public class BasicController {
     UserRepository userrepo;
     @Autowired
     AttendanceRepository attendrepo;
+    @Autowired
+    LogRepository logrepo;
+    @Autowired
+    DeviceRepository devicerepo;
 
 
     /***************모든 personal 정보 출력*********************/
@@ -88,6 +96,24 @@ public class BasicController {
         }
         Gson gson=new Gson();
         String i=gson.toJson(member);
+        return i;
+    }
+    /***************mac를 통해 log 정보 출력*********************/
+    @GetMapping(value = "/mac/{mac}",produces = "application/json")
+    public String showbymac(@PathVariable("mac") String mac){
+        Device device =devicerepo.findDeviceByMacaddr(mac.toLowerCase());
+        if(device ==null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+        List<Log> logList=logrepo.findAllByDeviceid(device.getDevice_id());
+        DeviceLogDto data=new DeviceLogDto();
+        data.setCount(logList.size());
+        data.setDevice(device);
+        data.setLoglist(logList);
+        Gson gson=new Gson();
+        String i=gson.toJson(data);
         return i;
     }
     /***************id와 날짜를 통해 attendance 정보 출력*********************/

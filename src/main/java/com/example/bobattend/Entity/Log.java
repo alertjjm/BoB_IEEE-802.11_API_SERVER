@@ -20,7 +20,7 @@ public class Log {
     @Column(name="node_id")
     int node_id;
     @Column(name="device_id")
-    int device_id;
+    int deviceid;
     @Column(name="RSSI")
     int RSSI;
     @Column(name="time")

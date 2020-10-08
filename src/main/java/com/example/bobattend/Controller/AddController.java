@@ -60,4 +60,8 @@ public class AddController {
         else
             return "redirect:/api/"+id+"/"+ time;
     }
+    @GetMapping(value="/searchbymac")
+    public String searchbymac(@RequestParam(value = "mac") String mac)  {
+        return "redirect:/api/mac/"+mac;
+    }
 }
