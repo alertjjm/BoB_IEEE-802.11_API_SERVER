@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 @CrossOrigin(origins = "*")
 @Controller
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
@@ -27,7 +27,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     }
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
-        /*
+
         List<Member> ml=new ArrayList<>();
         ml=us.findAll();
         for(Member i:ml){
@@ -38,7 +38,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
                 System.out.println(i.getId());
             }
         }
-         */
+
         return "error.html";
     }
 }
+*/

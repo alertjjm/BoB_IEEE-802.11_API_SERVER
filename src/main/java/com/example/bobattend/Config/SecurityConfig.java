@@ -67,17 +67,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-  */
+*/
+
     @Override
     protected void configure(HttpSecurity security) throws Exception
     {
-        security.httpBasic().disable();
+        security.httpBasic().and().csrf().disable();
     }
 
-
+/*
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // 로그인 처리를 하기 위한 AuthenticationManagerBuilder를 설정
         auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
+
+ */
 }
