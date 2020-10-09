@@ -119,6 +119,8 @@ public class BasicController {
             }
             else{
                 NameMonthDto temp=new NameMonthDto(date,a.getRoomid(),entertime,exittime,exittime-entertime);
+                if(exittime<entertime)
+                    temp.addtime(24*3600);
                 alist.add(temp);
             }
         }
