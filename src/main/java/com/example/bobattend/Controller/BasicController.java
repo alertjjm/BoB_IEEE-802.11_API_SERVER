@@ -85,6 +85,44 @@ public class BasicController {
         String i=gson.toJson(alist);
         return i;
     }
+    /***************이름를 통해 personal 정보 출력*********************/
+    @CrossOrigin(origins="*")
+    @GetMapping(value = "/name/{name}/month/{ymonth}",produces = "application/json")
+    public String showbyusernamemonth(@PathVariable("name") String name,@PathVariable("ymonth") String ymonth){
+        List<Member> memberList =userrepo.findAllByName(name);
+        if(memberList.size()==0){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+        int year=Integer.parseInt(ymonth.substring(0,4));
+        int month=Integer.parseInt(ymonth.substring(4,6));
+        LocalDateTime startdate=LocalDateTime.of(year, month, 1, 0,0,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month+1, 1, 0,0,0);
+        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(memberList.get(0).getPersonal_id(),startdate,enddate);
+        List<NameMonthDto> alist=new ArrayList<>();
+        Member member=memberList.get(0);
+        int index=0;
+        for(index=0; index<attendanceList.size(); index++){
+            Attendance a=attendanceList.get(index);
+            String date=Integer.toString(a.getEntertime().getYear()*10000+a.getEntertime().getMonthValue()*100+a.getEntertime().getDayOfMonth());
+            int entertime=a.getEntertime().getHour()*3600+a.getEntertime().getMinute()*60+a.getEntertime().getSecond();
+            int exittime=a.getExittime().getHour()*3600+a.getExittime().getMinute()*60+a.getExittime().getSecond();
+            if(alist.size()>0 && alist.get(alist.size()-1).getDate().equals(date)){
+                if(alist.get(alist.size()-1).getEntertime()>entertime)
+                    alist.get(alist.size()-1).setEntertime(entertime);
+                alist.get(alist.size()-1).setExittime(exittime);
+                alist.get(alist.size()-1).addtime(exittime-entertime);
+            }
+            else{
+                NameMonthDto temp=new NameMonthDto(date,a.getRoomid(),entertime,exittime,exittime-entertime);
+                alist.add(temp);
+            }
+        }
+        Gson gson=new Gson();
+        String i=gson.toJson(alist);
+        return i;
+    }
     /***************id를 통해 personal 정보 출력*********************/
     @GetMapping(value = "/{id}",produces = "application/json")
     public String showbyuserid(@PathVariable("id") String id){
