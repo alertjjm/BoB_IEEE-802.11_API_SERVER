@@ -188,7 +188,7 @@ public class BasicController {
             );
         }
     }
-    /***************id와 날짜를 통해 attendance 정보 출력*********************/
+    /***************name과 날짜를 통해 attendance 정보 출력*********************/
     @GetMapping(value = "/name/{name}/date/{date}",produces = "application/json")
     public String showbynameanddate(Model model, @PathVariable("name") String name, @PathVariable("date") String date) throws ParseException {
         int year=Integer.parseInt(date.substring(0,4));
@@ -224,6 +224,20 @@ public class BasicController {
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
+    }
+    /***************name 통해 personal 정보 출력*********************/
+    @GetMapping(value = "/getdevice/name/{name}",produces = "application/json")
+    public String showdevicebyname(@PathVariable("name") String name){
+        List<Member> memberList =userrepo.findAllByName(name);
+        if(memberList.size()==0){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+        Member member=memberList.get(0);
+        Gson gson=new Gson();
+        String i=gson.toJson(member);
+        return i;
     }
     /***************모든 date 정보 출력*********************/
     @GetMapping(value="/date/{date}", produces = "application/json")
