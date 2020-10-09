@@ -188,6 +188,43 @@ public class BasicController {
             );
         }
     }
+    /***************id와 날짜를 통해 attendance 정보 출력*********************/
+    @GetMapping(value = "/name/{name}/date/{date}",produces = "application/json")
+    public String showbynameanddate(Model model, @PathVariable("name") String name, @PathVariable("date") String date) throws ParseException {
+        int year=Integer.parseInt(date.substring(0,4));
+        int month=Integer.parseInt(date.substring(4,6));
+        int day=Integer.parseInt(date.substring(6,8));
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
+        List<Member> memberList =userrepo.findAllByName(name);
+        if(memberList.size()==0){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+        Member temp=memberList.get(0);
+        List<AttendanceInterface> datalist=new ArrayList<>();
+        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonal_id(),startdate,enddate);
+        if(attendanceList.size()>0){
+            for(Attendance a:attendanceList){
+                LocalDateTime temptime=a.getEntertime();
+                int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                temptime=a.getExittime();
+                int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
+                datalist.add(tempinterface);
+            }
+            AttendanceDto jsonResult=new AttendanceDto(attendanceList.size(),datalist);
+            Gson gson=new Gson();
+            String i=gson.toJson(jsonResult);
+            return i;
+        }
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+    }
     /***************모든 date 정보 출력*********************/
     @GetMapping(value="/date/{date}", produces = "application/json")
     public String dateshow(@PathVariable("date") String date){
