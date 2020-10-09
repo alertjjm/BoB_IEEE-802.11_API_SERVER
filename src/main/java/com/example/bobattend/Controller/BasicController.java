@@ -85,7 +85,7 @@ public class BasicController {
         String i=gson.toJson(alist);
         return i;
     }
-    /***************이름를 통해 personal 정보 출력*********************/
+    /***************이름과 month를 통해 personal 정보 출력*********************/
     @CrossOrigin(origins="*")
     @GetMapping(value = "/name/{name}/month/{ymonth}",produces = "application/json")
     public String showbyusernamemonth(@PathVariable("name") String name,@PathVariable("ymonth") String ymonth){
@@ -111,7 +111,8 @@ public class BasicController {
             if(alist.size()>0 && alist.get(alist.size()-1).getDate().equals(date)){
                 if(alist.get(alist.size()-1).getEntertime()>entertime)
                     alist.get(alist.size()-1).setEntertime(entertime);
-                alist.get(alist.size()-1).setExittime(exittime);
+                if(alist.get(alist.size()-1).getExittime()>exittime)
+                    alist.get(alist.size()-1).setExittime(exittime);
                 alist.get(alist.size()-1).addtime(exittime-entertime);
             }
             else{
