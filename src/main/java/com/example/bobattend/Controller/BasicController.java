@@ -42,7 +42,7 @@ public class BasicController {
     @GetMapping(value="/all", produces = "application/json")
     public String showall(){
         List<Member> memberList;
-        memberList =userrepo.findAll();
+        memberList =userrepo.findTop50by();
         UserListDto jsonResult=new UserListDto(memberList.size(), memberList);
         Gson gson=new Gson();
         String i=gson.toJson(jsonResult);
@@ -228,7 +228,7 @@ public class BasicController {
         }
     }
     @GetMapping(value = "/mac/{mac}/date/{date}",produces = "application/json")
-    public String showbymacanddate(Model model, @PathVariable("") String mac, @PathVariable("date") String date) throws ParseException {
+    public String showbymacanddate(Model model, @PathVariable("mac") String mac, @PathVariable("date") String date) throws ParseException {
         int year=Integer.parseInt(date.substring(0,4));
         int month=Integer.parseInt(date.substring(4,6));
         int day=Integer.parseInt(date.substring(6,8));
