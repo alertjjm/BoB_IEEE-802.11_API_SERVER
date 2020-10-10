@@ -17,7 +17,7 @@ public class Member {
     @Id
     @Column(name="personal_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    int personal_id;
+    int personalid;
     @Column(name="name")
     String name;
     @Column(name="id")

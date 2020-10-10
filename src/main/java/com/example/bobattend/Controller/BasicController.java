@@ -65,7 +65,7 @@ public class BasicController {
             AttendancebynameDto atemp=new AttendancebynameDto();
             atemp.setId(u.getId());
             atemp.setName(u.getName());
-            atemp.setPersonalid(u.getPersonal_id());
+            atemp.setPersonalid(u.getPersonalid());
             alist.add(atemp);
         }
         for(AttendancebynameDto u: alist){
@@ -99,7 +99,7 @@ public class BasicController {
         int month=Integer.parseInt(ymonth.substring(4,6));
         LocalDateTime startdate=LocalDateTime.of(year, month, 1, 0,0,0);
         LocalDateTime enddate=LocalDateTime.of(year, month+1, 1, 0,0,0);
-        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(memberList.get(0).getPersonal_id(),startdate,enddate);
+        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(memberList.get(0).getPersonalid(),startdate,enddate);
         List<NameMonthDto> alist=new ArrayList<>();
         Member member=memberList.get(0);
         int index=0;
@@ -150,7 +150,7 @@ public class BasicController {
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
-        List<Log> logList=logrepo.findAllByDeviceid(device.getDevice_id());
+        List<Log> logList=logrepo.findAllByDeviceid(device.getDeviceid());
         DeviceLogDto data=new DeviceLogDto();
         data.setCount(logList.size());
         data.setDevice(device);
@@ -169,7 +169,7 @@ public class BasicController {
         LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
         Member temp=userrepo.findById(id);
         List<AttendanceInterface> datalist=new ArrayList<>();
-        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonal_id(),startdate,enddate);
+        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonalid(),startdate,enddate);
         if(attendanceList.size()>0){
             for(Attendance a:attendanceList){
                 LocalDateTime temptime=a.getEntertime();
@@ -206,7 +206,7 @@ public class BasicController {
         }
         Member temp=memberList.get(0);
         List<AttendanceInterface> datalist=new ArrayList<>();
-        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonal_id(),startdate,enddate);
+        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonalid(),startdate,enddate);
         if(attendanceList.size()>0){
             for(Attendance a:attendanceList){
                 LocalDateTime temptime=a.getEntertime();
@@ -217,6 +217,37 @@ public class BasicController {
                 datalist.add(tempinterface);
             }
             AttendanceDto jsonResult=new AttendanceDto(attendanceList.size(),datalist);
+            Gson gson=new Gson();
+            String i=gson.toJson(jsonResult);
+            return i;
+        }
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
+    }
+    @GetMapping(value = "/mac/{mac}/date/{date}",produces = "application/json")
+    public String showbymacanddate(Model model, @PathVariable("") String mac, @PathVariable("date") String date) throws ParseException {
+        int year=Integer.parseInt(date.substring(0,4));
+        int month=Integer.parseInt(date.substring(4,6));
+        int day=Integer.parseInt(date.substring(6,8));
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
+        Device device=devicerepo.findDeviceByMacaddr(mac);
+        Member temp=userrepo.findMemberByPersonalid(device.getPersonal_id());
+        List<AttendanceInterface> datalist=new ArrayList<>();
+        List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonalid(),startdate,enddate);
+        if(attendanceList.size()>0){
+            for(Attendance a:attendanceList){
+                LocalDateTime temptime=a.getEntertime();
+                int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                temptime=a.getExittime();
+                int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
+                datalist.add(tempinterface);
+            }
+            AttendancebymacDto jsonResult=new AttendancebymacDto(attendanceList.size(),datalist,temp.getDeviceList());
             Gson gson=new Gson();
             String i=gson.toJson(jsonResult);
             return i;
@@ -283,7 +314,7 @@ public class BasicController {
                 for(Attendance a: attendanceList){
                     int tempentertime=a.getEntertime().getHour()*3600+a.getEntertime().getMinute()*60+a.getEntertime().getSecond();
                     int tempexittime=a.getExittime().getHour()*3600+a.getExittime().getMinute()*60+a.getExittime().getSecond();
-                    if(t.getPersonal_id()==a.getPersonalid()){
+                    if(t.getPersonalid()==a.getPersonalid()){
                         temp.setStatus(Boolean.TRUE);
                         temp.setRoomdid(a.getRoomid());
                         if(temp.getEntertime()>tempentertime)

@@ -44,7 +44,7 @@ public class AddController {
             return "redirect:/error";
         }
         int len= member.getDeviceList().size();
-        deviceDto.setPersonal_id(member.getPersonal_id());
+        deviceDto.setPersonal_id(member.getPersonalid());
         deviceDto.setDevice_index(len+1);
         deviceRepository.save(deviceDto.toEntity());
         return "redirect:/api/"+deviceDto.getId();

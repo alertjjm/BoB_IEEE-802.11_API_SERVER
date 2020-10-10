@@ -14,7 +14,7 @@ public class Device {
     @Id
     @Column(name="device_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    int device_id;
+    int deviceid;
     @Column(name="personal_id")
     int personal_id;
     @Column(name="mac_addr")

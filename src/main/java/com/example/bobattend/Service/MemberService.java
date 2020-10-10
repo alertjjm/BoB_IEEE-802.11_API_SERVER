@@ -32,7 +32,7 @@ public class MemberService implements UserDetailsService {
 
         // password를 암호화 한 뒤 dp에 저장
 
-        return memberRepository.save(memberDto.toEntity()).getPersonal_id();
+        return memberRepository.save(memberDto.toEntity()).getPersonalid();
     }
 
     @Override
