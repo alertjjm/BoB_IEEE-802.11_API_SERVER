@@ -42,7 +42,7 @@ public class BasicController {
     @GetMapping(value="/all", produces = "application/json")
     public String showall(){
         List<Member> memberList;
-        memberList =userrepo.findAllByPersonalidBetween(0,50);
+        memberList =userrepo.findAllByPersonalidBetween(0,30);
         UserListDto jsonResult=new UserListDto(memberList.size(), memberList);
         Gson gson=new Gson();
         String i=gson.toJson(jsonResult);
