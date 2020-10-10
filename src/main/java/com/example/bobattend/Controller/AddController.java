@@ -40,8 +40,17 @@ public class AddController {
         deviceDto.setMac(deviceDto.getMac().toLowerCase());
         Member member =userRepository.findById(deviceDto.getId());
         Device device=deviceRepository.findDeviceByMacaddr(deviceDto.getMac());
-        if(member ==null||deviceDto.getId().trim()==""||deviceDto.getMac()==""||device!=null){
+        if(member ==null||deviceDto.getId().trim()==""||deviceDto.getMac()==""){
             return "redirect:/error";
+        }
+        if(device!=null){
+            int pid=device.getPersonal_id();
+            Member temp=userRepository.findMemberByPersonalid(pid);
+            if(temp.getName().equals("unknown")){
+                userRepository.deleteMemberByPersonalid(temp.getPersonalid());
+            }
+            else
+                return "redirect:/error";
         }
         int len= member.getDeviceList().size();
         deviceDto.setPersonal_id(member.getPersonalid());

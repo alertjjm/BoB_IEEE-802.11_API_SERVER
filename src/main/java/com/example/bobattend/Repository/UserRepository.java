@@ -12,4 +12,5 @@ public interface UserRepository extends CrudRepository<Member,Integer> {
     public Member findById(String id);
     public Member findMemberByPersonalid(int personalid);
     public List<Member> findAllByPersonalidBetween(int s, int e);
+    public void deleteMemberByPersonalid(int pid);
 }
