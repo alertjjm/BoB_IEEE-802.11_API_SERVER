@@ -111,7 +111,7 @@ public class BasicController {
             if(alist.size()>0 && alist.get(alist.size()-1).getDate().equals(date)){
                 if(alist.get(alist.size()-1).getEntertime()>entertime)
                     alist.get(alist.size()-1).setEntertime(entertime);
-                if(alist.get(alist.size()-1).getExittime()>exittime)
+                if(alist.get(alist.size()-1).getExittime()<exittime)
                     alist.get(alist.size()-1).setExittime(exittime);
                 if(exittime<entertime)
                     exittime+=24*3600;
