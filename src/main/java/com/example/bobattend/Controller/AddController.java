@@ -55,6 +55,8 @@ public class AddController {
                     a.setPersonalid(member.getPersonalid());
                 }
                 attendrepo.saveAll(attendanceList);
+                device.setPersonal_id(member.getPersonalid());
+                deviceRepository.save(device);
                 temp.setName("Deleted");
                 userRepository.save(temp);
             }
