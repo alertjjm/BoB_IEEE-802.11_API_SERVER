@@ -36,7 +36,7 @@ public class AddController {
         return "redirect:/api/"+newid;
     }
     @PostMapping(value="/device/add")
-    public String adddevice(DeviceDto deviceDto) throws Exception {
+    public String adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
         deviceDto.setMac(deviceDto.getMac().toLowerCase());
         Member member =userRepository.findById(deviceDto.getId());
         Device device=deviceRepository.findDeviceByMacaddr(deviceDto.getMac());
@@ -47,6 +47,8 @@ public class AddController {
             int pid=device.getPersonal_id();
             Member temp=userRepository.findMemberByPersonalid(pid);
             if(temp.getName().equals("unknown")){
+                device.setPersonal_id(member.getPersonalid());
+                deviceRepository.save(device);
                 userRepository.deleteMemberByPersonalid(temp.getPersonalid());
             }
             else

@@ -4,6 +4,7 @@ import com.example.bobattend.Entity.Member;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository<Member,Integer> {
@@ -12,5 +13,6 @@ public interface UserRepository extends CrudRepository<Member,Integer> {
     public Member findById(String id);
     public Member findMemberByPersonalid(int personalid);
     public List<Member> findAllByPersonalidBetween(int s, int e);
+    @Transactional
     public void deleteMemberByPersonalid(int pid);
 }
