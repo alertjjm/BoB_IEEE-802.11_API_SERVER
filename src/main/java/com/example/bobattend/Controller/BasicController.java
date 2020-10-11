@@ -216,7 +216,7 @@ public class BasicController {
                 temptime=a.getExittime();
                 int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
                 if(ext<ent)
-                    ext=3600*24;
+                    ent=0;
                 AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
                 datalist.add(tempinterface);
             }
@@ -249,7 +249,7 @@ public class BasicController {
                 temptime=a.getExittime();
                 int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
                 if(ext<ent)
-                    ext=3600*24;
+                    ent=0;
                 AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
                 datalist.add(tempinterface);
             }
