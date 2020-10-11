@@ -8,10 +8,13 @@ import com.example.bobattend.Repository.AttendanceRepository;
 import com.example.bobattend.Repository.DeviceRepository;
 import com.example.bobattend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.MessageDigest;
 import java.util.List;
@@ -27,24 +30,28 @@ public class AddController {
     AttendanceRepository attendrepo;
 
     @PostMapping(value="/user/signup")
-    public String signup(MemberDto memberDto) throws Exception {
+    public ResponseEntity<?> signup(MemberDto memberDto) throws Exception {
         System.out.println(memberDto.getName());
         Member temp=userRepository.findById(memberDto.getId());
         if(temp!=null|| memberDto.getId().trim()==""|| memberDto.getPassword()==""|| memberDto.getName().trim()==""){
-            return "redirect:/error";
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Error"
+            );
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         String newid=userRepository.save(memberDto.toEntity()).getId();
-        return "redirect:/api/"+newid;
+        return new ResponseEntity(HttpStatus.OK);
     }
     @PostMapping(value="/device/add")
-    public String adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
+    public ResponseEntity<?> adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
         deviceDto.setMac(deviceDto.getMac().toLowerCase());
         Member member =userRepository.findById(deviceDto.getId());//찐 멤버
         Device device=deviceRepository.findDeviceByMacaddr(deviceDto.getMac());
         if(member ==null||deviceDto.getId().trim()==""||deviceDto.getMac()==""){
-            return "redirect:/error";
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
         }
         if(device!=null){//device의 personal id, attendance의 personal id
             int pid=device.getPersonal_id();//unknown dummy id
@@ -61,15 +68,18 @@ public class AddController {
                 userRepository.save(temp);
             }
             else
-                return "redirect:/error";
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "entity not found"
+                );
+            return new ResponseEntity(HttpStatus.OK);
         }
         else {
             int len = member.getDeviceList().size();
             deviceDto.setPersonal_id(member.getPersonalid());
             deviceDto.setDevice_index(len + 1);
             deviceRepository.save(deviceDto.toEntity());
+            return new ResponseEntity(HttpStatus.OK);
         }
-        return "redirect:/api/"+deviceDto.getId();
     }
     @GetMapping(value="/")
     public String mainpage()  {
