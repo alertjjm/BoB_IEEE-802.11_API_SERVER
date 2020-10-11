@@ -1,6 +1,7 @@
 package com.example.bobattend.Controller;
 import com.example.bobattend.Dto.DeviceDto;
 import com.example.bobattend.Dto.MemberDto;
+import com.example.bobattend.Entity.Attendance;
 import com.example.bobattend.Entity.Device;
 import com.example.bobattend.Entity.Member;
 import com.example.bobattend.Repository.AttendanceRepository;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -39,20 +41,22 @@ public class AddController {
     @PostMapping(value="/device/add")
     public String adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
         deviceDto.setMac(deviceDto.getMac().toLowerCase());
-        Member member =userRepository.findById(deviceDto.getId());
+        Member member =userRepository.findById(deviceDto.getId());//찐 멤버
         Device device=deviceRepository.findDeviceByMacaddr(deviceDto.getMac());
         if(member ==null||deviceDto.getId().trim()==""||deviceDto.getMac()==""){
             return "redirect:/error";
         }
-        if(device!=null){
-            int pid=device.getPersonal_id();
-            Member temp=userRepository.findMemberByPersonalid(pid);
-            if(temp.getName().equals("정종민")){
-                temp.setId(member.getId());
-                temp.setPassword(member.getPassword());
-                temp.setName(member.getName());
+        if(device!=null){//device의 personal id, attendance의 personal id
+            int pid=device.getPersonal_id();//unknown dummy id
+            Member temp=userRepository.findMemberByPersonalid(pid);//
+            if(temp.getName().equals("unknown")){
+                List<Attendance> attendanceList=attendrepo.findAllByPersonalid(pid);
+                for(Attendance a: attendanceList){
+                    a.setPersonalid(member.getPersonalid());
+                }
+                attendrepo.saveAll(attendanceList);
+                temp.setName("Deleted");
                 userRepository.save(temp);
-                userRepository.delete(member);
             }
             else
                 return "redirect:/error";
