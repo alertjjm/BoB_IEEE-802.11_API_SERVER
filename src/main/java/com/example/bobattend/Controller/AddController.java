@@ -30,7 +30,7 @@ public class AddController {
     AttendanceRepository attendrepo;
 
     @PostMapping(value="/user/signup")
-    public ResponseEntity<?> signup(MemberDto memberDto) throws Exception {
+    public String signup(MemberDto memberDto) throws Exception {
         System.out.println(memberDto.getName());
         Member temp=userRepository.findById(memberDto.getId());
         if(temp!=null|| memberDto.getId().trim()==""|| memberDto.getPassword()==""|| memberDto.getName().trim()==""){
@@ -41,10 +41,10 @@ public class AddController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         String newid=userRepository.save(memberDto.toEntity()).getId();
-        return new ResponseEntity(HttpStatus.OK);
+        return "redirect:https://bob-0x10-att.web.app/Aregister.html";
     }
     @PostMapping(value="/device/add")
-    public ResponseEntity<?> adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
+    public String adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
         deviceDto.setMac(deviceDto.getMac().toLowerCase());
         Member member =userRepository.findById(deviceDto.getId());//찐 멤버
         Device device=deviceRepository.findDeviceByMacaddr(deviceDto.getMac());
@@ -71,14 +71,14 @@ public class AddController {
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "entity not found"
                 );
-            return new ResponseEntity(HttpStatus.OK);
+            return "redirect:https://bob-0x10-att.web.app/Aregister.html";
         }
         else {
             int len = member.getDeviceList().size();
             deviceDto.setPersonal_id(member.getPersonalid());
             deviceDto.setDevice_index(len + 1);
             deviceRepository.save(deviceDto.toEntity());
-            return new ResponseEntity(HttpStatus.OK);
+            return "redirect:https://bob-0x10-att.web.app/Aregister.html";
         }
     }
     @GetMapping(value="/")
