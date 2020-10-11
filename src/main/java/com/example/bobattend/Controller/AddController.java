@@ -23,6 +23,7 @@ public class AddController {
     DeviceRepository deviceRepository;
     @Autowired
     AttendanceRepository attendrepo;
+
     @PostMapping(value="/user/signup")
     public String signup(MemberDto memberDto) throws Exception {
         System.out.println(memberDto.getName());
@@ -46,18 +47,22 @@ public class AddController {
         if(device!=null){
             int pid=device.getPersonal_id();
             Member temp=userRepository.findMemberByPersonalid(pid);
-            if(temp.getName().equals("unknown")){
-                device.setPersonal_id(member.getPersonalid());
-                deviceRepository.save(device);
-                userRepository.deleteMemberByPersonalid(temp.getPersonalid());
+            if(temp.getName().equals("정종민")){
+                temp.setId(member.getId());
+                temp.setPassword(member.getPassword());
+                temp.setName(member.getName());
+                userRepository.save(temp);
+                userRepository.delete(member);
             }
             else
                 return "redirect:/error";
         }
-        int len= member.getDeviceList().size();
-        deviceDto.setPersonal_id(member.getPersonalid());
-        deviceDto.setDevice_index(len+1);
-        deviceRepository.save(deviceDto.toEntity());
+        else {
+            int len = member.getDeviceList().size();
+            deviceDto.setPersonal_id(member.getPersonalid());
+            deviceDto.setDevice_index(len + 1);
+            deviceRepository.save(deviceDto.toEntity());
+        }
         return "redirect:/api/"+deviceDto.getId();
     }
     @GetMapping(value="/")

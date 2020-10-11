@@ -31,6 +31,6 @@ public class Member {
         setPassword(password);
     }
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="personal_id")
+    @JoinColumn(name="personal_id",updatable = false)
     private List<Device> deviceList = new ArrayList<>();
 }
