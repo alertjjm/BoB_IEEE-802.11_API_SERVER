@@ -244,11 +244,12 @@ public class BasicController {
         List<Attendance> attendanceList=attendrepo.findAllByPersonalidAndExittimeBetweenOrderByEntertime(temp.getPersonalid(),startdate,enddate);
         if(attendanceList.size()>0){
             for(Attendance a:attendanceList){
+                int ent;
                 LocalDateTime temptime=a.getEntertime();
-                int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
+                ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
                 temptime=a.getExittime();
                 int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
-                if(ext<ent)
+                if(a.getExittime().getDayOfYear() - a.getEntertime().getDayOfYear() > 0)
                     ent=0;
                 AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
                 datalist.add(tempinterface);
