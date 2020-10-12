@@ -159,7 +159,7 @@ public class BasicController {
         String i=gson.toJson(data);
         return i;
     }
-    /***************id와 날짜를 통해 attendance 정보 출력*********************/
+    /***************id와 날짜를 통해 attendance 정보 출력*********************///이거도 밤열두시 문제고치기
     @GetMapping(value = "/{id}/{date}",produces = "application/json")
     public String showattendancebyid(Model model, @PathVariable("id") String id, @PathVariable("date") String date) throws ParseException {
         int year=Integer.parseInt(date.substring(0,4));
@@ -262,9 +262,7 @@ public class BasicController {
                     LocalDateTime temptime = a.getEntertime();
                     int ent = temptime.getHour() * 3600 + temptime.getMinute() * 60 + temptime.getSecond();
                     temptime = a.getExittime();
-                    int ext = temptime.getHour() * 3600 + temptime.getMinute() * 60 + temptime.getSecond();
-                    if (ext < ent)
-                        ext = 86400;
+                    int ext = 86400;
                     AttendanceInterface tempinterface = new AttendanceInterface(a.getPersonalid(), a.getRoomid(), ent, ext);
                     datalist.add(tempinterface);
                 }
@@ -369,7 +367,7 @@ public class BasicController {
         List<DateAttendanceDto> returnlist=new ArrayList<>();
         List<Member> memberList=userrepo.findAllByNameIsNot("unknown");
         for(Member member: memberList){
-            if(!member.getName().equals("Deleted")) {
+            if(!member.getName().equals("deleted")) {
                 DateAttendanceDto temp = new DateAttendanceDto();
                 temp.setName(member.getName());
                 temp.setStatus(Boolean.FALSE);
