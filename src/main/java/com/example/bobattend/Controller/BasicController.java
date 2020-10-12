@@ -253,30 +253,31 @@ public class BasicController {
                 AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
                 datalist.add(tempinterface);
             }
+        }
         List<Attendance> attendanceListfiter=attendrepo.findAllByPersonalidAndEntertimeBetweenOrderByEntertime(temp.getPersonalid(),startdate,enddate);
-        if(attendanceList.size()>0){
-            for(Attendance a:attendanceListfiter){
-                if(a.getExittime().getDayOfYear()-a.getEntertime().getDayOfYear()>0){
-                    LocalDateTime temptime=a.getEntertime();
-                    int ent=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
-                    temptime=a.getExittime();
-                    int ext=temptime.getHour()*3600+temptime.getMinute()*60+temptime.getSecond();
-                    if(ext<ent)
-                        ext=86400;
-                    AttendanceInterface tempinterface=new AttendanceInterface(a.getPersonalid(),a.getRoomid(),ent,ext);
+        if(attendanceListfiter.size()>0 && attendanceList.size()>0) {
+            for (Attendance a : attendanceListfiter) {
+                if (a.getExittime().getDayOfYear() - a.getEntertime().getDayOfYear() > 0) {
+                    LocalDateTime temptime = a.getEntertime();
+                    int ent = temptime.getHour() * 3600 + temptime.getMinute() * 60 + temptime.getSecond();
+                    temptime = a.getExittime();
+                    int ext = temptime.getHour() * 3600 + temptime.getMinute() * 60 + temptime.getSecond();
+                    if (ext < ent)
+                        ext = 86400;
+                    AttendanceInterface tempinterface = new AttendanceInterface(a.getPersonalid(), a.getRoomid(), ent, ext);
                     datalist.add(tempinterface);
                 }
             }
-            AttendancebymacDto jsonResult=new AttendancebymacDto(attendanceList.size(),datalist,temp.getDeviceList());
-            Gson gson=new Gson();
-            String i=gson.toJson(jsonResult);
-            return i;
         }
         else{
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
+        AttendancebymacDto jsonResult=new AttendancebymacDto(attendanceList.size(),datalist,temp.getDeviceList());
+        Gson gson=new Gson();
+        String i=gson.toJson(jsonResult);
+        return i;
     }
     /***************name 통해 personal 정보 출력*********************/
     @GetMapping(value = "/getdevice/name/{name}",produces = "application/json")
