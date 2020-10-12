@@ -274,7 +274,7 @@ public class BasicController {
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
-        AttendancebymacDto jsonResult=new AttendancebymacDto(attendanceList.size()+attendanceListfiter.size(),datalist,temp.getDeviceList());
+        AttendancebymacDto jsonResult=new AttendancebymacDto(datalist.size(),datalist,temp.getDeviceList());
         Gson gson=new Gson();
         String i=gson.toJson(jsonResult);
         return i;
