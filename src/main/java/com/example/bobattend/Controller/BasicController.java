@@ -293,7 +293,8 @@ public class BasicController {
         String i=gson.toJson(member);
         return i;
     }
-    /***************모든 date 정보 출력*********************/
+
+    /*
     @GetMapping(value="/date/{date}", produces = "application/json")
     public String dateshow(@PathVariable("date") String date){
         if(date.length()!=8){
@@ -350,9 +351,10 @@ public class BasicController {
         String i=gson.toJson(returnlist);
         return i;
     }
+    */
     /***************모든 date 정보 출력*********************/
-    @GetMapping(value="/newdate/{date}", produces = "application/json")
-    public String newdateshow(@PathVariable("date") String date){
+    @GetMapping(value="/date/{date}", produces = "application/json")
+    public String dateshow(@PathVariable("date") String date){
         if(date.length()!=8){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "date format error"
@@ -386,7 +388,7 @@ public class BasicController {
                         temp.setExittime(tempexittime);
                 }
                 returnlist.add(temp);
-            }   
+            }
         }
         Gson gson=new Gson();
         String i=gson.toJson(returnlist);
