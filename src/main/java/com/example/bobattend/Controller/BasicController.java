@@ -255,7 +255,7 @@ public class BasicController {
             }
         }
         List<Attendance> attendanceListfiter=attendrepo.findAllByPersonalidAndEntertimeBetweenOrderByEntertime(temp.getPersonalid(),startdate,enddate);
-        if(attendanceListfiter.size()>0 && attendanceList.size()>0) {
+        if(attendanceListfiter.size()>0 || attendanceList.size()>0) {
             for (Attendance a : attendanceListfiter) {
                 if (a.getExittime().getDayOfYear() - a.getEntertime().getDayOfYear() > 0) {
                     LocalDateTime temptime = a.getEntertime();
