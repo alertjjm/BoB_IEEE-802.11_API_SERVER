@@ -350,6 +350,69 @@ public class BasicController {
         String i=gson.toJson(returnlist);
         return i;
     }
+    /***************모든 date 정보 출력*********************/
+    @GetMapping(value="/newdate/{date}", produces = "application/json")
+    public String newdateshow(@PathVariable("date") String date){
+        if(date.length()!=8){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "date format error"
+            );
+        }
+        int year=Integer.parseInt(date.substring(0,4));
+        int month=Integer.parseInt(date.substring(4,6));
+        int day=Integer.parseInt(date.substring(6,8));
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
+        List<Attendance> attendanceList=attendrepo.findAllByExittimeBetweenOrderByPersonalid(startdate,enddate);
+        List<DateAttendanceDto> returnlist=new ArrayList<>();
+
+        int pid=attendanceList.get(0).getPersonalid();
+        Member member=userrepo.findMemberByPersonalid(pid);
+        DateAttendanceDto temp=new DateAttendanceDto();
+        temp.setName(member.getName());
+        temp.setStatus(Boolean.TRUE);
+        temp.setId(member.getId());
+        int tempentertime=attendanceList.get(0).getEntertime().getHour()*3600+attendanceList.get(0).getEntertime().getMinute()*60+attendanceList.get(0).getEntertime().getSecond();
+        int tempexittime=attendanceList.get(0).getExittime().getHour()*3600+attendanceList.get(0).getExittime().getMinute()*60+attendanceList.get(0).getExittime().getSecond();
+        temp.setEntertime(tempentertime);
+        temp.setExittime(tempexittime);
+        for(Attendance a: attendanceList){
+            tempentertime=a.getEntertime().getHour()*3600+a.getEntertime().getMinute()*60+a.getEntertime().getSecond();
+            tempexittime=a.getExittime().getHour()*3600+a.getExittime().getMinute()*60+a.getExittime().getSecond();
+            if(pid==a.getPersonalid()){
+                temp.setRoomdid(a.getRoomid());
+                if(temp.getEntertime()>tempentertime)
+                    temp.setEntertime(tempentertime);
+                if(temp.getExittime()<tempexittime)
+                    temp.setExittime(tempexittime);
+            }
+            else{
+                if(temp.getEntertime()>temp.getExittime()){
+                    temp.setEntertime(0);
+                }
+                returnlist.add(temp);
+                temp=new DateAttendanceDto();
+                a.getPersonalid();
+                member=userrepo.findMemberByPersonalid(pid);
+                temp.setName(member.getName());
+                temp.setStatus(Boolean.TRUE);
+                temp.setId(member.getId());
+                temp.setEntertime(86400);
+                temp.setExittime(0);
+                temp.setName(member.getName());
+                temp.setStatus(Boolean.TRUE);
+                temp.setId(member.getId());
+                tempentertime=a.getEntertime().getHour()*3600+a.getEntertime().getMinute()*60+a.getEntertime().getSecond();
+                tempexittime=a.getExittime().getHour()*3600+a.getExittime().getMinute()*60+a.getExittime().getSecond();
+                temp.setEntertime(tempentertime);
+                temp.setExittime(tempexittime);
+            }
+            returnlist.add(temp);
+        }
+        Gson gson=new Gson();
+        String i=gson.toJson(returnlist);
+        return i;
+    }
     /***************모든 time 정보 출력*********************/
     @GetMapping(value="/timelist", produces = "application/json")
     public String timeshow(@RequestParam(value = "time",required = false) String time,@RequestParam(value = "date",required = false) String date){
