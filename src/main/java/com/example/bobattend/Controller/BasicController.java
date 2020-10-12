@@ -263,7 +263,7 @@ public class BasicController {
                     temptime = a.getExittime();
                     int ext = temptime.getHour() * 3600 + temptime.getMinute() * 60 + temptime.getSecond();
                     if (ext < ent)
-                        ext = 86400;
+                        ext = 86399;
                     AttendanceInterface tempinterface = new AttendanceInterface(a.getPersonalid(), a.getRoomid(), ent, ext);
                     datalist.add(tempinterface);
                 }
