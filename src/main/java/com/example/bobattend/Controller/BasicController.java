@@ -263,7 +263,7 @@ public class BasicController {
                     temptime = a.getExittime();
                     int ext = temptime.getHour() * 3600 + temptime.getMinute() * 60 + temptime.getSecond();
                     if (ext < ent)
-                        ext = 86399;
+                        ext = 86400;
                     AttendanceInterface tempinterface = new AttendanceInterface(a.getPersonalid(), a.getRoomid(), ent, ext);
                     datalist.add(tempinterface);
                 }
@@ -274,7 +274,7 @@ public class BasicController {
                     HttpStatus.NOT_FOUND, "entity not found"
             );
         }
-        AttendancebymacDto jsonResult=new AttendancebymacDto(attendanceList.size(),datalist,temp.getDeviceList());
+        AttendancebymacDto jsonResult=new AttendancebymacDto(attendanceList.size()+attendanceListfiter.size(),datalist,temp.getDeviceList());
         Gson gson=new Gson();
         String i=gson.toJson(jsonResult);
         return i;
