@@ -52,6 +52,11 @@ public class BasicController {
     @CrossOrigin(origins="*")
     @GetMapping(value = "/name/{name}",produces = "application/json")
     public String showbyusername(@PathVariable("name") String name){
+        if(name.equals("unknown")||name.equals("deleted")){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "entity not found"
+            );
+        }
         List<Member> memberList =userrepo.findAllByName(name);
         List<Attendance> attendanceList=attendrepo.findAll();
 
@@ -89,6 +94,11 @@ public class BasicController {
     @CrossOrigin(origins="*")
     @GetMapping(value = "/name/{name}/month/{ymonth}",produces = "application/json")
     public String showbyusernamemonth(@PathVariable("name") String name,@PathVariable("ymonth") String ymonth){
+        if(name.equals("unknown")||name.equals("deleted")){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "entity not found"
+            );
+        }
         List<Member> memberList =userrepo.findAllByName(name);
         if(memberList.size()==0){
             throw new ResponseStatusException(
