@@ -15,4 +15,5 @@ public interface UserRepository extends CrudRepository<Member,Integer> {
     public List<Member> findAllByPersonalidBetween(int s, int e);
     @Transactional
     public void deleteMemberByPersonalid(int pid);
+    public List<Member> findAllByNameIsNot(String name);
 }
