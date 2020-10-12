@@ -366,25 +366,27 @@ public class BasicController {
         List<DateAttendanceDto> returnlist=new ArrayList<>();
         List<Member> memberList=userrepo.findAllByNameIsNot("unknown");
         for(Member member: memberList){
-            DateAttendanceDto temp=new DateAttendanceDto();
-            temp.setName(member.getName());
-            temp.setStatus(Boolean.FALSE);
-            temp.setId(member.getId());
-            temp.setRoomdid(0);
-            temp.setEntertime(86400);
-            temp.setExittime(0);
-            List<Attendance> attendanceList=attendrepo.findAllByExittimeBetweenAndPersonalid(startdate,enddate,member.getPersonalid());
-            for(Attendance a: attendanceList){
-                int tempentertime=a.getEntertime().getHour()*3600+a.getEntertime().getMinute()*60+a.getEntertime().getSecond();
-                int tempexittime=a.getExittime().getHour()*3600+a.getExittime().getMinute()*60+a.getExittime().getSecond();
-                temp.setStatus(Boolean.TRUE);
-                temp.setRoomdid(a.getRoomid());
-                if(temp.getEntertime()>tempentertime)
-                    temp.setEntertime(tempentertime);
-                if(temp.getExittime()<tempexittime)
-                    temp.setExittime(tempexittime);
-            }
-            returnlist.add(temp);
+            if(!member.getName().equals("Deleted")) {
+                DateAttendanceDto temp = new DateAttendanceDto();
+                temp.setName(member.getName());
+                temp.setStatus(Boolean.FALSE);
+                temp.setId(member.getId());
+                temp.setRoomdid(0);
+                temp.setEntertime(86400);
+                temp.setExittime(0);
+                List<Attendance> attendanceList = attendrepo.findAllByExittimeBetweenAndPersonalid(startdate, enddate, member.getPersonalid());
+                for (Attendance a : attendanceList) {
+                    int tempentertime = a.getEntertime().getHour() * 3600 + a.getEntertime().getMinute() * 60 + a.getEntertime().getSecond();
+                    int tempexittime = a.getExittime().getHour() * 3600 + a.getExittime().getMinute() * 60 + a.getExittime().getSecond();
+                    temp.setStatus(Boolean.TRUE);
+                    temp.setRoomdid(a.getRoomid());
+                    if (temp.getEntertime() > tempentertime)
+                        temp.setEntertime(tempentertime);
+                    if (temp.getExittime() < tempexittime)
+                        temp.setExittime(tempexittime);
+                }
+                returnlist.add(temp);
+            }   
         }
         Gson gson=new Gson();
         String i=gson.toJson(returnlist);
