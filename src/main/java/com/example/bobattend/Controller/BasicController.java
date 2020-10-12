@@ -288,9 +288,14 @@ public class BasicController {
         String i=gson.toJson(jsonResult);
         return i;
     }
-    /***************name 통해 personal 정보 출력*********************/
+    /***************이름 통해 personal 정보 출력*********************/
     @GetMapping(value = "/getdevice/name/{name}",produces = "application/json")
     public String showdevicebyname(@PathVariable("name") String name){
+        if(name.equals("unknown")||name.equals("deleted")){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "entity not found"
+            );
+        }
         List<Member> memberList =userrepo.findAllByName(name);
         if(memberList.size()==0){
             throw new ResponseStatusException(
