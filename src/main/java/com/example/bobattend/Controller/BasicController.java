@@ -205,6 +205,11 @@ public class BasicController {
     /***************name과 날짜를 통해 attendance 정보 출력*********************/
     @GetMapping(value = "/name/{name}/date/{date}",produces = "application/json")
     public String showbynameanddate(Model model, @PathVariable("name") String name, @PathVariable("date") String date) throws ParseException {
+        if(name.equals("unknown")||name.equals("deleted")){
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "entity not found"
+            );
+        }
         int year=Integer.parseInt(date.substring(0,4));
         int month=Integer.parseInt(date.substring(4,6));
         int day=Integer.parseInt(date.substring(6,8));
