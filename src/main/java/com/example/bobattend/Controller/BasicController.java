@@ -1,14 +1,8 @@
 package com.example.bobattend.Controller;
 
 import com.example.bobattend.Dto.*;
-import com.example.bobattend.Entity.Attendance;
-import com.example.bobattend.Entity.Device;
-import com.example.bobattend.Entity.Log;
-import com.example.bobattend.Entity.Member;
-import com.example.bobattend.Repository.AttendanceRepository;
-import com.example.bobattend.Repository.DeviceRepository;
-import com.example.bobattend.Repository.LogRepository;
-import com.example.bobattend.Repository.UserRepository;
+import com.example.bobattend.Entity.*;
+import com.example.bobattend.Repository.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +29,8 @@ public class BasicController {
     LogRepository logrepo;
     @Autowired
     DeviceRepository devicerepo;
-
+    @Autowired
+    PureMemberRepository pureMemberrepo;
 
     /***************모든 personal 정보 출력*********************/
     @CrossOrigin(origins="*")
@@ -319,16 +314,16 @@ public class BasicController {
         int day=Integer.parseInt(date.substring(6,8)); //03
         int hour=Integer.parseInt(date.substring(8,10));//18
         int minute=Integer.parseInt(date.substring(10,12));//45
-        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute+1,0);
-        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute-14,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute,0);
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute-4,0);
         List<AttendancemapDto> datalist=new ArrayList<>();
-        List<Attendance> attendanceList=attendrepo.findAllByExittimeBetween(startdate, enddate);
+        List<Attendance> attendanceList=attendrepo.findAllByEntertimeBeforeAndExittimeAfter(startdate,startdate);
         for(Attendance a:attendanceList){
             AttendancemapDto temp=new AttendancemapDto();
-            Member tempmember=userrepo.findMemberByPersonalid(a.getPersonalid());
+            PureMember tempmember=pureMemberrepo.findPureMemberByPersonalid(a.getPersonalid());
             if(!(tempmember.getName().equals("unknown")||tempmember.getName().equals("deleted"))){
                 temp.setAttinfo(a);
-                temp.setName(tempmember.getName());
+                temp.setMember(tempmember);
                 datalist.add(temp);
             }
         }

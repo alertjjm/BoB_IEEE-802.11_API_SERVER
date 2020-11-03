@@ -18,4 +18,5 @@ public interface AttendanceRepository extends CrudRepository<Attendance,Integer>
     List<Attendance> findAllByExittimeBetweenAndPersonalid(LocalDateTime start, LocalDateTime end, int pid);
     List<Attendance> findAllByPersonalid(int id);
     List<Attendance> findAll();
+    List<Attendance> findAllByEntertimeBeforeAndExittimeAfter(LocalDateTime time1,LocalDateTime time2);
 }

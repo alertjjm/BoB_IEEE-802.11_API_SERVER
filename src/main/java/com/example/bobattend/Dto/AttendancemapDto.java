@@ -1,6 +1,7 @@
 package com.example.bobattend.Dto;
 
 import com.example.bobattend.Entity.Attendance;
+import com.example.bobattend.Entity.PureMember;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 public class AttendancemapDto {
-    String name;
+    PureMember member;
     Attendance attinfo;
 }
