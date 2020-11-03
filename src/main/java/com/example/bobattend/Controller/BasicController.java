@@ -312,6 +312,30 @@ public class BasicController {
         String i=gson.toJson(member);
         return i;
     }
+    @GetMapping(value = "/map/date/{date}",produces = "application/json")
+    public String showmapbydate(@PathVariable("date") String date) throws ParseException{
+        int year=Integer.parseInt(date.substring(0,4)); //2020
+        int month=Integer.parseInt(date.substring(4,6)); //11
+        int day=Integer.parseInt(date.substring(6,8)); //03
+        int hour=Integer.parseInt(date.substring(8,10));//18
+        int minute=Integer.parseInt(date.substring(10,12));//45
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute+1,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute-14,0);
+        List<AttendancemapDto> datalist=new ArrayList<>();
+        List<Attendance> attendanceList=attendrepo.findAllByExittimeBetween(startdate, enddate);
+        for(Attendance a:attendanceList){
+            AttendancemapDto temp=new AttendancemapDto();
+            Member tempmember=userrepo.findMemberByPersonalid(a.getPersonalid());
+            if(!(tempmember.getName().equals("unknown")||tempmember.getName().equals("deleted"))){
+                temp.setAttinfo(a);
+                temp.setName(tempmember.getName());
+                datalist.add(temp);
+            }
+        }
+        Gson gson=new Gson();
+        String i=gson.toJson(datalist);
+        return i;
+    }
 
     /*
     @GetMapping(value="/date/{date}", produces = "application/json")

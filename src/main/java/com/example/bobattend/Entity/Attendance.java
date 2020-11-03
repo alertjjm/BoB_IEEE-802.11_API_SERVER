@@ -19,6 +19,8 @@ public class Attendance {
     int personalid;
     @Column(name="room_id")
     int roomid;
+    @Column(name="node_id")
+    int nodeid;
     @Column(name="enter_time")
     LocalDateTime entertime;
     @Column(name="exit_time")
@@ -30,6 +32,7 @@ public class Attendance {
                 "index=" + index +
                 ", personalid=" + personalid +
                 ", roomid=" + roomid +
+                ", roomid=" + nodeid +
                 ", entertime=" + entertime +
                 ", exittime=" + exittime +
                 '}';
