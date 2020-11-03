@@ -315,7 +315,7 @@ public class BasicController {
         int hour=Integer.parseInt(date.substring(8,10));//18
         int minute=Integer.parseInt(date.substring(10,12));//45
         LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute,0);
-        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute-4,0);
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0);
         List<AttendancemapDto> datalist=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByEntertimeBeforeAndExittimeAfter(startdate,startdate);
         for(Attendance a:attendanceList){
