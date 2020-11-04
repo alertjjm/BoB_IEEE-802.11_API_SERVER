@@ -317,18 +317,33 @@ public class BasicController {
         LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute,0);
         LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0);
         List<AttendancemapDto> datalist=new ArrayList<>();
+        List<MapDto> mapDtoList=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByEntertimeBeforeAndExittimeAfter(startdate,startdate);
         for(Attendance a:attendanceList){
             AttendancemapDto temp=new AttendancemapDto();
             PureMember tempmember=pureMemberrepo.findPureMemberByPersonalid(a.getPersonalid());
             if(!(tempmember.getName().equals("unknown")||tempmember.getName().equals("deleted"))){
-                temp.setAttinfo(a);
+                int count=0;
                 temp.setMember(tempmember);
-                datalist.add(temp);
+                temp.setAttinfo(a);
+                for(MapDto item:mapDtoList){
+                    if(item.getRoomid()==a.getRoomid()){
+                        item.addattendancemap(temp);
+                        item.setCount(item.getCount()+1);
+                        count++;
+                        break;
+                    }
+                }
+                if(count==0){
+                    List<AttendancemapDto> members=new ArrayList<>();
+                    members.add(temp);
+                    MapDto newmapdto=new MapDto(a.getRoomid(),1,members);
+                    mapDtoList.add(newmapdto);
+                }
             }
         }
         Gson gson=new Gson();
-        String i=gson.toJson(datalist);
+        String i=gson.toJson(mapDtoList);
         return i;
     }
 
