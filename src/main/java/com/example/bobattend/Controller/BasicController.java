@@ -314,11 +314,13 @@ public class BasicController {
         int day=Integer.parseInt(date.substring(6,8)); //03
         int hour=Integer.parseInt(date.substring(8,10));//18
         int minute=Integer.parseInt(date.substring(10,12));//45
-        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute+1,0);
         LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0);
         List<AttendancemapDto> datalist=new ArrayList<>();
         List<MapDto> mapDtoList=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByEntertimeBeforeAndExittimeAfter(startdate,startdate);
+        List<Attendance> attendanceList1=attendrepo.findAllByEntertimeBetweenAndExittimeBetween(startdate,enddate,startdate,enddate);
+        attendanceList.addAll(attendanceList1);
         for(Attendance a:attendanceList){
             AttendancemapDto temp=new AttendancemapDto();
             PureMember tempmember=pureMemberrepo.findPureMemberByPersonalid(a.getPersonalid());
