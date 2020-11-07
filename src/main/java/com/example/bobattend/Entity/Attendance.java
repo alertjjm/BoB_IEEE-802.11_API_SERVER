@@ -21,6 +21,8 @@ public class Attendance {
     int roomid;
     @Column(name="node_id")
     int nodeid;
+    @Column(name="device_id")
+    int deviceid;
     @Column(name="enter_time")
     LocalDateTime entertime;
     @Column(name="exit_time")
