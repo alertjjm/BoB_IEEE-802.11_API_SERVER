@@ -31,7 +31,8 @@ public class BasicController {
     DeviceRepository devicerepo;
     @Autowired
     PureMemberRepository pureMemberrepo;
-
+    @Autowired
+    PositionRepository positionRepository;
     /***************모든 personal 정보 출력*********************/
     @CrossOrigin(origins="*")
     @GetMapping(value="/all", produces = "application/json")
@@ -348,65 +349,29 @@ public class BasicController {
         String i=gson.toJson(mapDtoList);
         return i;
     }
-
-    /*
-    @GetMapping(value="/date/{date}", produces = "application/json")
-    public String dateshow(@PathVariable("date") String date){
-        if(date.length()!=8){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "date format error"
-            );
-        }
-        int year=Integer.parseInt(date.substring(0,4));
-        int month=Integer.parseInt(date.substring(4,6));
-        int day=Integer.parseInt(date.substring(6,8));
-        LocalDateTime startdate=LocalDateTime.of(year, month, day, 0,0,0);
-        LocalDateTime enddate=LocalDateTime.of(year, month, day, 23,59,59);
-        List<Attendance> attendanceList=attendrepo.findAllByExittimeBetween(startdate,enddate);
-        List<Member> memberList;
-        memberList =userrepo.findAll();
-        List<DateAttendanceDto> returnlist=new ArrayList<>();
-        if(attendanceList.size()==0){
-            for(Member t: memberList){
-                DateAttendanceDto temp=new DateAttendanceDto();
-                temp.setName(t.getName());
-                temp.setStatus(Boolean.FALSE);
-                temp.setId(t.getId());
-                temp.setRoomdid(0);
-                temp.setEntertime(0);
-                temp.setExittime(0);
-                returnlist.add(temp);
-            }
+    @GetMapping(value = "/position/id/{id}/date/{date}",produces = "application/json")
+    public String showmapbydate(@PathVariable("date") String date,@PathVariable("id") int id) throws ParseException{
+        int year=Integer.parseInt(date.substring(0,4)); //2020
+        int month=Integer.parseInt(date.substring(4,6)); //11
+        int day=Integer.parseInt(date.substring(6,8)); //03
+        int hour=Integer.parseInt(date.substring(8,10));//18
+        int minute=Integer.parseInt(date.substring(10,12));//45
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute+1,0);
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0);
+        List<Position> positionList=new ArrayList<>();
+        positionList=positionRepository.findTop1ByAttendtimeBetweenAndPersonalidOrderByAttendtimeDesc(startdate,enddate,id);
+        if(positionList.size()==1){
+            Gson gson=new Gson();
+            String i=gson.toJson(positionList.get(0));
+            return i;
         }
         else{
-            for(Member t: memberList){
-                DateAttendanceDto temp=new DateAttendanceDto();
-                temp.setName(t.getName());
-                temp.setStatus(Boolean.FALSE);
-                temp.setId(t.getId());
-                temp.setRoomdid(0);
-                temp.setEntertime(86400);
-                temp.setExittime(0);
-                returnlist.add(temp);
-                for(Attendance a: attendanceList){
-                    int tempentertime=a.getEntertime().getHour()*3600+a.getEntertime().getMinute()*60+a.getEntertime().getSecond();
-                    int tempexittime=a.getExittime().getHour()*3600+a.getExittime().getMinute()*60+a.getExittime().getSecond();
-                    if(t.getPersonalid()==a.getPersonalid()){
-                        temp.setStatus(Boolean.TRUE);
-                        temp.setRoomdid(a.getRoomid());
-                        if(temp.getEntertime()>tempentertime)
-                            temp.setEntertime(tempentertime);
-                        if(temp.getExittime()<tempexittime)
-                            temp.setExittime(tempexittime);
-                    }
-                }
-            }
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "not found"
+            );
         }
-        Gson gson=new Gson();
-        String i=gson.toJson(returnlist);
-        return i;
     }
-    */
+
     /***************모든 date 정보 출력*********************/
     @GetMapping(value="/date/{date}", produces = "application/json")
     public String dateshow(@PathVariable("date") String date){
