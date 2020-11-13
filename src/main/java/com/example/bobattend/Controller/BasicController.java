@@ -329,6 +329,15 @@ public class BasicController {
                 int count=0;
                 temp.setMember(tempmember);
                 temp.setAttinfo(a);
+                List<Position> positionList=new ArrayList<>();
+                positionList=positionRepository.findTop1ByAttendtimeBetweenAndDeviceid(startdate,enddate,a.getDeviceid());
+                if(positionList.size()>0){
+                    temp.setPosition(positionList.get(0));
+                }
+                else{
+                    Position position=new Position(-1,-1,-1,-1,-1,null);
+                    temp.setPosition(position);
+                }
                 for(MapDto item:mapDtoList){
                     if(item.getRoomid()==a.getRoomid()){
                         item.addattendancemap(temp);
