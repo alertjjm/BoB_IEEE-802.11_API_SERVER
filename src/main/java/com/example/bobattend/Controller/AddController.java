@@ -9,6 +9,7 @@ import com.example.bobattend.Repository.DeviceRepository;
 import com.example.bobattend.Repository.UserRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,8 @@ public class AddController {
     @GetMapping(value = "/img/{name}",
             produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody byte[] Img(@PathVariable(value = "name") String fileName) throws IOException {
-        InputStream in = getClass().getResourceAsStream("test/"+fileName+".png");
+        ClassPathResource resource = new ClassPathResource("test/"+fileName+".png");
+        InputStream in = resource.getInputStream();//getClass().getResourceAsStream("test/"+fileName+".png");
         byte[] byteArray = IOUtils.toByteArray(in);
         return byteArray;
     }
