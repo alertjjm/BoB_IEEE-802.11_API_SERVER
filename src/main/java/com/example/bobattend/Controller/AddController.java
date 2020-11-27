@@ -7,8 +7,10 @@ import com.example.bobattend.Entity.Member;
 import com.example.bobattend.Repository.AttendanceRepository;
 import com.example.bobattend.Repository.DeviceRepository;
 import com.example.bobattend.Repository.UserRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.List;
 
@@ -28,7 +33,13 @@ public class AddController {
     DeviceRepository deviceRepository;
     @Autowired
     AttendanceRepository attendrepo;
-
+    @GetMapping(value = "/img/{name}",
+            produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] Img(@PathVariable(value = "name") String fileName) throws IOException {
+        InputStream in = getClass().getResourceAsStream("/com/example/bobattend/test/"+fileName+".png");
+        byte[] byteArray = IOUtils.toByteArray(in);
+        return byteArray;
+    }
     @PostMapping(value="/user/signup")
     public String signup(MemberDto memberDto) throws Exception {
         System.out.println(memberDto.getName());
