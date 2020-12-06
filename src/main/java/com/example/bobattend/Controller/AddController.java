@@ -37,8 +37,15 @@ public class AddController {
     @GetMapping(value = "/img/{name}",
             produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody byte[] Img(@PathVariable(value = "name") String fileName) throws IOException {
-        ClassPathResource resource = new ClassPathResource("test/"+fileName+".png");
-        InputStream in = resource.getInputStream();//getClass().getResourceAsStream("test/"+fileName+".png");
+        ClassPathResource resource;
+        InputStream in;
+        try{
+            resource = new ClassPathResource("test/"+fileName+".png");
+            in = resource.getInputStream();
+        }catch (Exception e){
+            resource = new ClassPathResource("test/"+"blackUSER"+".png");
+            in = resource.getInputStream();
+        }
         byte[] byteArray = IOUtils.toByteArray(in);
         return byteArray;
     }

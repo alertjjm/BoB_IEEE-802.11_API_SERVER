@@ -365,7 +365,7 @@ public class BasicController {
         int day=Integer.parseInt(date.substring(6,8)); //03
         int hour=Integer.parseInt(date.substring(8,10));//18
         int minute=Integer.parseInt(date.substring(10,12));//45
-        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute+1,0);
+        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute,0).plusMinutes(1);
         LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0);
         List<Position> positionList=new ArrayList<>();
         positionList=positionRepository.findTop1ByAttendtimeBetweenAndPersonalidOrderByAttendtimeDesc(startdate,enddate,id);
