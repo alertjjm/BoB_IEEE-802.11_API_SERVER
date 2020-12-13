@@ -61,7 +61,7 @@ public class AddController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         String newid=userRepository.save(memberDto.toEntity()).getId();
-        return "redirect:/.reload";
+        return "redirect:/api/"+memberDto.getId();
     }
     @PostMapping(value="/device/add")
     public String adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
@@ -91,14 +91,14 @@ public class AddController {
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "entity not found"
                 );
-            return "redirect:/.reload";
+            return "redirect:/api/"+temp.getId();
         }
         else {
             int len = member.getDeviceList().size();
             deviceDto.setPersonal_id(member.getPersonalid());
             deviceDto.setDevice_index(len + 1);
             deviceRepository.save(deviceDto.toEntity());
-            return "redirect:/.reload";
+            return "redirect:/api/"+member.getId();
         }
     }
     @GetMapping(value="/")
