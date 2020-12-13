@@ -308,6 +308,7 @@ public class BasicController {
         String i=gson.toJson(member);
         return i;
     }
+    /***************날짜 통해 위치 정보 출력*********************/
     @GetMapping(value = "/map/date/{date}",produces = "application/json")
     public String showmapbydate(@PathVariable("date") String date) throws ParseException{
         int year=Integer.parseInt(date.substring(0,4)); //2020
@@ -358,29 +359,6 @@ public class BasicController {
         String i=gson.toJson(mapDtoList);
         return i;
     }
-    @GetMapping(value = "/position/id/{id}/date/{date}",produces = "application/json")
-    public String showmapbydate(@PathVariable("date") String date,@PathVariable("id") int id) throws ParseException{
-        int year=Integer.parseInt(date.substring(0,4)); //2020
-        int month=Integer.parseInt(date.substring(4,6)); //11
-        int day=Integer.parseInt(date.substring(6,8)); //03
-        int hour=Integer.parseInt(date.substring(8,10));//18
-        int minute=Integer.parseInt(date.substring(10,12));//45
-        LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute,0).plusMinutes(1);
-        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0);
-        List<Position> positionList=new ArrayList<>();
-        positionList=positionRepository.findTop1ByAttendtimeBetweenAndPersonalidOrderByAttendtimeDesc(startdate,enddate,id);
-        if(positionList.size()==1){
-            Gson gson=new Gson();
-            String i=gson.toJson(positionList.get(0));
-            return i;
-        }
-        else{
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "not found"
-            );
-        }
-    }
-
     /***************모든 date 정보 출력*********************/
     @GetMapping(value="/date/{date}", produces = "application/json")
     public String dateshow(@PathVariable("date") String date){

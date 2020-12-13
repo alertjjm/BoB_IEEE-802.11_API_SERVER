@@ -61,7 +61,7 @@ public class AddController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         String newid=userRepository.save(memberDto.toEntity()).getId();
-        return "redirect:https://bob-0x10-att.web.app/Aregister.html";
+        return "redirect:/.reload";
     }
     @PostMapping(value="/device/add")
     public String adddevice(DeviceDto deviceDto) throws Exception {//개발 필요
@@ -91,14 +91,14 @@ public class AddController {
                 throw new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "entity not found"
                 );
-            return "redirect:https://bob-0x10-att.web.app/Aregister.html";
+            return "redirect:/.reload";
         }
         else {
             int len = member.getDeviceList().size();
             deviceDto.setPersonal_id(member.getPersonalid());
             deviceDto.setDevice_index(len + 1);
             deviceRepository.save(deviceDto.toEntity());
-            return "redirect:https://bob-0x10-att.web.app/Aregister.html";
+            return "redirect:/.reload";
         }
     }
     @GetMapping(value="/")

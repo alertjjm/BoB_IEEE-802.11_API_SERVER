@@ -15,8 +15,6 @@ public class Log {
     @Column(name="index")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     int index;
-    @Column(name="is_processed")
-    boolean is_processed;
     @Column(name="node_id")
     int node_id;
     @Column(name="device_id")
