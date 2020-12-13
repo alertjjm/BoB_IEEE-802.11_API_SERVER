@@ -317,7 +317,7 @@ public class BasicController {
         int hour=Integer.parseInt(date.substring(8,10));//18
         int minute=Integer.parseInt(date.substring(10,12));//45
         LocalDateTime enddate=LocalDateTime.of(year, month, day, hour,minute,0).plusMinutes(1);
-        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0);
+        LocalDateTime startdate=LocalDateTime.of(year, month, day, hour,minute,0).minusMinutes(3);
         List<AttendancemapDto> datalist=new ArrayList<>();
         List<MapDto> mapDtoList=new ArrayList<>();
         List<Attendance> attendanceList=attendrepo.findAllByEntertimeBeforeAndExittimeAfter(startdate,startdate);
@@ -331,7 +331,7 @@ public class BasicController {
                 temp.setMember(tempmember);
                 temp.setAttinfo(a);
                 List<Position> positionList=new ArrayList<>();
-                positionList=positionRepository.findTop1ByAttendtimeBetweenAndDeviceid(startdate,enddate,a.getDeviceid());
+                positionList=positionRepository.findTop1ByAttendtimeBetweenAndDeviceidOrderByIndexDesc(startdate,enddate,a.getDeviceid());
                 if(positionList.size()>0){
                     temp.setPosition(positionList.get(0));
                 }
