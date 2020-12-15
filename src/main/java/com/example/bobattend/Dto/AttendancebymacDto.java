@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+//출석 정보
 @AllArgsConstructor
 @Getter
 @Setter

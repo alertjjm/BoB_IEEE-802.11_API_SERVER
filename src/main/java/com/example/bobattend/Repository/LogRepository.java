@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface LogRepository extends CrudRepository<Log,Integer> {
+    //deviceid로 모든 로그 찾는 메소드
     List<Log> findAllByDeviceid(int did);
 }

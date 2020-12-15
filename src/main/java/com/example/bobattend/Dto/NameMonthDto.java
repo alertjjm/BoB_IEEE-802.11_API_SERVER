@@ -14,7 +14,8 @@ public class NameMonthDto {
     int roomid;
     int entertime;
     int exittime;
-    int timespent;
+    int timespent;  //총 체류 시간
+    //총 시간 누적 메소드
     public void addtime(int time){
         timespent+=time;
     }

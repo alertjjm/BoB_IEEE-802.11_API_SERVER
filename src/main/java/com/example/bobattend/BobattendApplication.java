@@ -21,7 +21,6 @@ import javax.servlet.Filter;
 import javax.xml.ws.ServiceMode;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
-
 @SpringBootApplication
 public class BobattendApplication {
     public static void main(String[] args) {
@@ -32,7 +31,7 @@ public class BobattendApplication {
     public HttpMessageConverter<String> responseBodyConverter() {
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));
     }
-
+    //utf8 인코딩 적용
     @Bean
     public Filter characterEncodingFilter() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
@@ -46,10 +45,10 @@ public class BobattendApplication {
         tomcat.addAdditionalTomcatConnectors(createStandardConnector());
         return tomcat;
     }
+    // 톰캣에 Connector 추가
     private Connector createStandardConnector(){
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setPort(80);
         return connector;
     }
-
 }

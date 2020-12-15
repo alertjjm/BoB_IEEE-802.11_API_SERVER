@@ -1,7 +1,7 @@
 package com.example.bobattend.Dto;
 import com.example.bobattend.Entity.Device;
 import lombok.*;
-
+//device 정보와 회원 정보 전달 위한 devicedto
 @Getter
 @Setter
 @ToString

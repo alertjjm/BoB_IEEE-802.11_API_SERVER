@@ -8,8 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
+//회원, 출석, 위치 정보 모두 제공
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

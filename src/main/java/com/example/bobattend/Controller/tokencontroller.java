@@ -1,7 +1,7 @@
 package com.example.bobattend.Controller;
 
 import org.springframework.web.bind.annotation.*;
-
+//dns 등록 위한 토큰 controller
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/.well-known/pki-validation")
@@ -14,4 +14,3 @@ public class tokencontroller {
         return tk;
     }
 }
-//.well-known/pki-validation/E0F24DDDB9CD29501E8BD299F3C54495.txt

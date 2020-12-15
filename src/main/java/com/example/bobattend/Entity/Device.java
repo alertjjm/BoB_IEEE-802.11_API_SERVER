@@ -3,7 +3,7 @@ package com.example.bobattend.Entity;
 import lombok.*;
 
 import javax.persistence.*;
-
+//device entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity

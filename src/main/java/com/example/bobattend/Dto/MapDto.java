@@ -1,11 +1,11 @@
 package com.example.bobattend.Dto;
 
-import com.example.bobattend.Entity.PureMember;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//출석 정보 리스트와 room 정보
 import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor

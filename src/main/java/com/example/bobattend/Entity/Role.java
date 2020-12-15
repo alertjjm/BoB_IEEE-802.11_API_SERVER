@@ -2,7 +2,7 @@ package com.example.bobattend.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
+//권한 entity
 @AllArgsConstructor
 @Getter
 public enum Role {

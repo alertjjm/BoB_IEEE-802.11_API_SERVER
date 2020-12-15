@@ -1,9 +1,9 @@
 package com.example.bobattend.Entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 
+//node 정보 entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity

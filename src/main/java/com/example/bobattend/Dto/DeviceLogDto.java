@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
-
+//디바이스 정보와 로그 정보
 @Getter
 @Setter
 @ToString
