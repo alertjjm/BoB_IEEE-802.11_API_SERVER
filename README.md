@@ -56,3 +56,6 @@ Spring-boot backend for attendance-checker
         │
         ├─templates
         └─     index.html
+        
+        
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/alertjjm/provider)](https://hits.seeyoufarm.com) 
