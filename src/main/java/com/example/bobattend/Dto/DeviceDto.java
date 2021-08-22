@@ -1,7 +1,11 @@
 package com.example.bobattend.Dto;
+
 import com.example.bobattend.Entity.Device;
-import lombok.*;
-//device 정보와 회원 정보 전달 위한 devicedto
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Getter
 @Setter
 @ToString
@@ -11,7 +15,8 @@ public class DeviceDto {
     int device_index;
     String id;
     String mac;
-    public Device toEntity(){
+
+    public Device toEntity() {
         return Device.builder().personal_id(personal_id).device_index(device_index).macaddr(mac).build();
     }
 }

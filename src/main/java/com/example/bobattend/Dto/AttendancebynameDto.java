@@ -8,7 +8,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-//출석 정보
 @AllArgsConstructor
 @Getter
 @Setter
@@ -19,7 +18,8 @@ public class AttendancebynameDto {
     int personalid;
     List<String> datelist = new ArrayList<>();
     int roomid;
-    public void adddatelist(String date){
+
+    public void adddatelist(String date) {
         this.datelist.add(date);
     }
 }

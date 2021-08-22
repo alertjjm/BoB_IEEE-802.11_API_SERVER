@@ -5,7 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DeviceRepository extends CrudRepository<Device,Integer> {
-    //맥주소로 device 찾는 메소드
+public interface DeviceRepository extends CrudRepository<Device, Integer> {
     Device findDeviceByMacaddr(String mac);
 }

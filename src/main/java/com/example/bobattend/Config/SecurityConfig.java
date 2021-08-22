@@ -23,10 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }//비밀번호 인코더
+    }
     @Override
     protected void configure(HttpSecurity security) throws Exception
     {
-        security.httpBasic().and().csrf().disable();//csrf 정책 해제
+        security.httpBasic().and().csrf().disable();
     }
 }
